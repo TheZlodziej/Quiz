@@ -1,0 +1,43 @@
+[
+    {
+        "contents" : "ile mam lat?",
+        "answers" : [ "13", "17", "13", "22" ],
+        "correctAnswer" : 1,
+        "type" : "matfiz"
+    },
+
+    {
+        "contents" : "jaki jest mój ulubiony przedmiot?",
+        "answers" : [ "matematyka", "informatyka", "fizyka" ],
+        "correctAnswer" : 1,
+        "type" : "matfiz"
+    },
+
+    {
+        "contents" : "2<sup>2</sup>",
+        "answers" : [ "4", "3", "2", "1", "0" ],
+        "correctAnswer" : 0,
+        "type" : "matfiz"
+    },
+
+    {
+        "contents" : "mine",
+        "answers" : [ "maciek", "kuba" ],
+        "correctAnswer" : 0,
+        "type" : "human"
+    },
+
+    {
+        "contents" : "mine",
+        "answers" : [ "craft", "kuba" ],
+        "correctAnswer" : 1,
+        "type" : "human"
+    },
+
+    {
+        "contents" : "J",
+        "answers" : [ "D", "P" ],
+        "correctAnswer" : 0,
+        "type" : "wiedza powszechna"
+    }
+]
