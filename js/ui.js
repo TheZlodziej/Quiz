@@ -12,19 +12,29 @@
 
 function createFileInput()
 {
+    let fileInputSection = document.createElement("section");
     let fileInput = document.createElement("input");
+    let fileInputLabel = document.createElement("label");
+
     /*attributes*/
     fileInput.type = "file";
     fileInput.accept = ".json";
     fileInput.id="fileInput";
 
+    fileInputLabel.htmlFor = "fileInput";
+    fileInputLabel.innerHTML = "Wybierz plik z pytaniami";
+
     /*css*/
-    fileInput.style.cssText = "color:red;"; //add css
+    fileInput.style.cssText = "display: none;"; //add css
+    fileInputLabel.style.cssText = "background: #ff5a60; padding: 15px 35px; border-radius: 50px; text-transform: uppercase; font-weight: bold; cursor: pointer; color: #f3f4f6; font-size: 1.1rem;";
 
     /*event listeners*/
     fileInput.addEventListener('change', ()=>loadFile()); //start button?
     
-    return fileInput;
+    fileInputSection.appendChild(fileInput);
+    fileInputSection.appendChild(fileInputLabel);
+
+    return fileInputSection;
 }
 
 function createButton(text, styles = "", onClickEvent = ()=>{return})
@@ -34,7 +44,7 @@ function createButton(text, styles = "", onClickEvent = ()=>{return})
     button.innerText = text;
 
     /*css*/
-    button.style.cssText = "cursor: pointer;" + styles;
+    button.style.cssText = "cursor: pointer; border: 0;" + styles;
 
     /*event listeners*/
     button.addEventListener("click", onClickEvent);

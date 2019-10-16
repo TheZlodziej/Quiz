@@ -1,7 +1,5 @@
 function gameMenu()
 {
-    /* background pattern credits: https://leaverou.github.io/css3patterns/#carbon-fibre */
-
     let gameMenu = document.createElement("section");
 
     let menuBtnStyles = "min-width: 200px; min-height: 40px; width: 20vw; height: 7vh; font-size: 1.1rem; margin: 10px 0; border-radius: 50px; border: 0; font-weight: bold; color: #f3f4f6; text-transform: uppercase;";
@@ -12,7 +10,7 @@ function gameMenu()
 
 
     /*css*/
-    gameMenu.style.cssText=" height: 100vh; width: 100vw; display:flex; flex-direction: column; justify-content: center; align-items: center;background:radial-gradient(black 15%, transparent 16%) 0 0,radial-gradient(black 15%, transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;background-color:#282828;background-size:16px 16px;";
+    gameMenu.style.cssText=" height: 100vh; width: 100vw; display:flex; flex-direction: column; justify-content: center; align-items: center;";
 
     gameMenu.appendChild(startGameBtn);
     gameMenu.appendChild(createQuestionsBtn);
@@ -25,26 +23,50 @@ function prepareGame()
 {
     //ask for players and question
     clearBody();
+    let fileInputSection = document.createElement("section");
     let fileInput = createFileInput();
-    document.body.prepend(fileInput);
+
+    /*css*/
+    fileInputSection.style.cssText="height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center;";
+
+    fileInputSection.appendChild(fileInput);
+    document.body.prepend(fileInputSection);
+
+    //players input + start game button
 }
 
-function initGame(questions){
+function loadFile() 
+{
+    /* credits: https://stackoverflow.com/questions/7346563/loading-local-json-file */
+    
+    if (typeof window.FileReader !== 'function') 
+    {
+      alert("Your browser doesn't support File API"); 
+      return;
+    }
+
+    let input = document.getElementById("fileInput");
+    let file = input.files[0];
+    let fileReader = new FileReader();
+    
+    fileReader.onload = receivedText;
+    fileReader.readAsText(file);
+
+    function receivedText(e) 
+    {
+      let fileContent = e.target.result;
+      let parsedJSON = JSON.parse(fileContent);
+      initGame(parsedJSON); //start button??
+    }
+}
+
+function initGame(questions, players = [new Player("undefined_player", "undefined_category")]){
     //start the game
     clearBody();
-    let players = []; 
-    players.push(new Player("kuba", "matfiz"));
-    players.push(new Player("maciek", "human"));
 
     let game = new Game(players, questions);
-    let startButton = createButton("Rozpocznij", "", startGame);
+    let startButton = createButton("Rozpocznij", "background: #ff5a60; padding: 15px 35px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>game.start());
     document.body.prepend(startButton);
-
-    function startGame()
-    {
-      document.body.removeChild(startButton);
-      game.start();
-    }
  }
 
 function createQuestions()

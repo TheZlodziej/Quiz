@@ -181,6 +181,7 @@ class Game
 
     start()
     {
+        clearBody();
         document.body.prepend(this.gameSection);
         this.updateScoreboard();
         this.displayQuestion(this.questions[0].contents, this.questions[0].answers, this.questions[0].correctAnswer);
