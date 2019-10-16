@@ -8,7 +8,7 @@ function gameMenu()
     
     let startGameBtn = createButton("Rozpocznij", "background: #689eb8;"+menuBtnStyles, prepareGame);
     let createQuestionsBtn = createButton("Twórz pytania", "background: #ff5a60;"+menuBtnStyles, createQuestions);
-    let sourceCodeBtn = createButton("Kod źródłowy", "background: #8bc064;"+menuBtnStyles, ()=>{window.location.assign('https://github.com/TheZlodziej/')});
+    let sourceCodeBtn = createButton("Kod źródłowy", "background: #8bc064;"+menuBtnStyles, ()=>{window.location.assign('https://github.com/TheZlodziej/Quiz')});
 
 
     /*css*/
