@@ -126,9 +126,9 @@ class Game
         }  
 
         /*css*/
-        gameSection.style.cssText = "width: 100%; height: 100vh; background: blue; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-items: center;";
-        questionSection.style.cssText = "width: 90%; height: 45vh; background: yellow; text-align: center; font-size: 30px; display: flex; justify-content: center; align-items: center;";
-        answersSection.style.cssText = "width: 90%; height: 40vh; background: green; margin-top: 5vh; display: flex; justify-content: space-evenly; align-content: space-around; flex-wrap: wrap;";
+        gameSection.style.cssText = "color: #f3f4f6; width: 100%; height: 100vh; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-items: center;";
+        questionSection.style.cssText = "width: 90%; height: 45vh; text-align: center; font-size: 30px; display: flex; justify-content: center; align-items: center;";
+        answersSection.style.cssText = "overflow-y: auto; overflow-x: hidden; width: 90%; height: 40vh; margin-top: 5vh; display: flex; justify-content: space-evenly; align-content: space-around; flex-wrap: wrap;";
         typesSection.style.cssText = "width: 200px; background: purple; position: absolute; top: 5vh; right: 10%;";
         scoreboardSection.style.cssText = "position: fixed; left: 10%; top: 5vh; width: 150px; background: orange;";
 
@@ -164,18 +164,45 @@ class Game
          this.updateScoreboard();
     }
 
+
     displayQuestion()
     {
         let answers = this.questions[this.currentType][this.currentQuestion[this.currentType]].answers;
         let answersSection = document.getElementById("answersSection") || alert("answers section was not created yet");
         let questionSection = document.getElementById("questionSection") || alert("question section was not created yet");
+        let colors = ["#9e54bd", "#2ecc71", "#fcd04b", "#f06060", "#4593e3", "#f58a38"]; //purple, green, yellow, red(pink), blue, orange
         
+        function getRandomColor()
+        {
+            let colorIndex = Math.floor(Math.random() * colors.length);
+            let color = colors[colorIndex];
+            colors.splice(colorIndex, 1);
+            return color;
+        }
+
+        function getAnswerLength()
+        {
+            if(window.innerWidth < 500)
+                return '100%';
+            
+            return '50%';
+        }
+
+        function getAnswerHeight()
+        {
+            if(window.innerWidth < 500)
+                return '7vh';
+            
+            return '30%';
+        }
+
         answersSection.innerHTML = ""; //remove old answers
         questionSection.innerHTML = this.questions[this.currentType][this.currentQuestion[this.currentType]].contents;
         
         for(let i in answers)
         {
-            answersSection.appendChild(createButton(answers[i], "font-size: 30px; height: 30%;", ()=>this.answerResult(i)));
+            //fix questions overflow (cant see some part of the questions if there's too many of them)
+            answersSection.appendChild(createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 200px; min-height: 40px; height: ${getAnswerHeight()}; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; width: calc(${getAnswerLength()} - 40px);text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>this.answerResult(i)));
         }
     }
 

@@ -15,7 +15,7 @@
 
     {
         "contents" : "2<sup>2</sup>",
-        "answers" : [ "4", "3", "2", "1", "0" ],
+        "answers" : [ "4", "3", "2", "1", "0", "100", "200", "9" ],
         "correctAnswer" : 0,
         "type" : "matfiz"
     },
