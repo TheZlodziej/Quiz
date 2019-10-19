@@ -37,6 +37,38 @@ function createFileInput()
     return fileInputSection;
 }
 
+function createPlayersInput()
+{
+    let playersInputSection = document.createElement("section");
+    let playersList = document.createElement("section");
+    let playerInput = document.createElement("input");
+    let addButton = createButton("dodaj", "", ()=>{
+        let pI = document.getElementById("playerInput");
+        let pL = document.getElementById("playersList");
+        //ask for types
+        console.log(pL);
+        if(pI.value){
+            pL.innerHTML += pI.value + ", ";
+            pI.value = "";
+        } else {
+            alert("you can't add player with no name");
+        }
+    })
+    /*attributes*/
+    playerInput.id="playerInput";
+    playersList.id="playersList";
+
+    /*css*/
+    playersList.style.cssText="color: #f3f4f6;";
+
+
+    playersInputSection.appendChild(playersList);
+    playersInputSection.appendChild(playerInput);
+    playersInputSection.appendChild(addButton);
+    
+    return playersInputSection;
+}
+
 function createButton(text, styles = "", onClickEvent = ()=>{return})
 {
     let button = document.createElement("button");

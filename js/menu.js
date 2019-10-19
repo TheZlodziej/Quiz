@@ -25,10 +25,12 @@ function prepareGame()
     clearBody();
     let fileInputSection = document.createElement("section");
     let fileInput = createFileInput();
+    let playersInput = createPlayersInput();
 
     /*css*/
-    fileInputSection.style.cssText="height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center;";
-
+    fileInputSection.style.cssText="height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center;";
+    /* ^ change to justify content center and add margin to elements */
+    fileInputSection.appendChild(playersInput);
     fileInputSection.appendChild(fileInput);
     document.body.prepend(fileInputSection);
 
@@ -55,7 +57,8 @@ function loadFile()
     function receivedText(e) 
     {
       let fileContent = e.target.result;
-      let parsedJSON = JSON.parse(fileContent);
+      let players = document.getElementById("playersList").innerHTML; //loop through players and make player object out of ever one
+      let parsedJSON = JSON.parse(fileContent, players);
       initGame(parsedJSON); //start button??
     }
 }
