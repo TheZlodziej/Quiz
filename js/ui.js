@@ -45,7 +45,7 @@ function createPlayersInput()
     let playerInputCategory = document.createElement("input");
     let players = document.createElement("section");
 
-    let addButton = createButton("dodaj", "background: #8bc064; width: 100%; margin: 10px 0; height: 6vh; min-height: 40px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>{
+    let addButton = createButton("dodaj gracza", "background: #8bc064; width: 100%; margin: 10px 0; height: 6vh; min-height: 40px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>{
         let pIN = document.getElementById("playerInputName");
         let pIC = document.getElementById("playerInputCategory");
         let pL = document.getElementById("playersList");
