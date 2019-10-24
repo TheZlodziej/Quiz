@@ -2,7 +2,7 @@ function gameMenu()
 {
     let gameMenu = document.createElement("section");
 
-    let menuBtnStyles = "min-width: 200px; min-height: 40px; width: 20vw; height: 7vh; font-size: 1.1rem; margin: 10px 0; border-radius: 50px; border: 0; font-weight: bold; color: #f3f4f6; text-transform: uppercase;";
+    let menuBtnStyles = "min-width: 200px; min-height: 40px; width: 20vw; height: 7vh; font-size: 1.1rem; margin: 10px 0; border-radius: 50px; font-weight: bold; color: #f3f4f6; text-transform: uppercase;";
     
     let startGameBtn = createButton("Rozpocznij", "background: #689eb8;"+menuBtnStyles, prepareGame);
     let createQuestionsBtn = createButton("Twórz pytania", "background: #ff5a60;"+menuBtnStyles, createQuestions);
@@ -29,7 +29,7 @@ function prepareGame()
 
     /*css*/
     fileInputSection.style.cssText="height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center;";
-    /* ^ change to justify content center and add margin to elements */
+    /* ^ after asking for players/questions change it to the other one then after asking once again start the game (maybe sth with return true - continue) */
     fileInputSection.appendChild(playersInput);
     fileInputSection.appendChild(fileInput);
     document.body.prepend(fileInputSection);
@@ -57,9 +57,17 @@ function loadFile()
     function receivedText(e) 
     {
       let fileContent = e.target.result;
-      let players = document.getElementById("playersList").innerHTML; //loop through players and make player object out of ever one
-      let parsedJSON = JSON.parse(fileContent, players);
-      initGame(parsedJSON); //start button??
+      let players = [];
+      let playersText = document.getElementById("players").childNodes;
+      
+      for(let e of playersText)
+      {
+        let playerAttributes = e.childNodes;
+        players.push(new Player(playerAttributes[0].textContent, playerAttributes[1].textContent)); 
+      }
+
+      let parsedJSON = JSON.parse(fileContent);
+      initGame(parsedJSON, players); //start button??
     }
 }
 
