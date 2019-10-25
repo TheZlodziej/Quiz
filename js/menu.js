@@ -52,7 +52,7 @@ function loadFile()
    
     if (typeof window.FileReader !== 'function') 
     {
-      alert("Your browser doesn't support File API"); 
+      messageBox("Twoja przeglądarka nie wspiera API plików!"); 
       return;
     }
 
@@ -72,7 +72,7 @@ function loadFile()
       {
         showPlayersInput(parsedJSON);
       } else {
-        alert("your questions file is empty!");
+        messageBox("Twój plik z pytaniami jest pusty!");
       }
     }
 }
@@ -91,7 +91,7 @@ function loadPlayers(parsedJSON)
   {
     initGame(parsedJSON, players);
   } else {
-    alert("add some players to start the game");
+    messageBox("Dodaj graczy, aby rozpocząć grę!");
   }
 }
 

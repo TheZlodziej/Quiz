@@ -10,6 +10,41 @@
 //
 //    }
 
+function messageBox(message)
+{
+    /*credits: https://speckyboy.com/css-js-notification-alert-code/  && https://gist.github.com/gordonbrander/2230317 */
+    let alertArea = document.getElementById("alertArea") || document.createElement("section");
+    let messageBox = document.createElement("section");
+    let mMessage = document.createElement("section");
+    let uID = '_' + Math.random().toString(36).substr(2, 9);
+    let closeButton = createButton("x", "position: absolute; font-size: 1em; top: 5px; right: 5px; background: transparent; color: #f3f4f6; width: 20px; height: 20px;", ()=>{
+        let messageBox_ = document.getElementById(uID);
+        messageBox_.style.opacity = 0;
+        setTimeout(function(){messageBox_.remove();}, 500);
+    });
+
+    /*attributes*/
+    alertArea.id="alertArea";
+    messageBox.id = uID;
+    mMessage.textContent = message;
+
+    /*css*/
+    alertArea.style.cssText="position: fixed; max-height: 100%; position: fixed; bottom: 5px; right: 20px;";
+    messageBox.style.cssText="opacity: 1; transition: opacity 0.5s ease-in; position: relative; border-radius: 5px; line-height: 1.3em; padding: 10px 20px 10px 15px; margin: 5px; 10px; width:250px; background: rgba(0, 0, 0, 0.8); color: white;";
+    mMessage.style.cssText="font-weight: lighter; width:100%, font-size .8rem;";
+
+    messageBox.appendChild(mMessage);
+    messageBox.appendChild(closeButton);
+    alertArea.prepend(messageBox) || document.body.prepend(alertArea);
+
+    setTimeout(function(){ 
+        messageBox.style.opacity=0; 
+        setTimeout(function(){ 
+            messageBox.remove()
+        },500); 
+    }, 8000);
+}
+
 function createFileInput()
 {
     let fileInputSection = document.createElement("section");
@@ -59,8 +94,9 @@ function createPlayersInput()
 
             pIN.focus();
         } else {
-            alert("fill up all empty space");
+            messageBox("Uzupełnij puste miejsca!");
         }
+        //get types from questions and make a list out of them (not input type=text)
     });
 
     /*attributes*/
