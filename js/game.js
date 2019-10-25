@@ -170,7 +170,7 @@ class Game
         let answers = this.questions[this.currentType][this.currentQuestion[this.currentType]].answers;
         let answersSection = document.getElementById("answersSection") || alert("answers section was not created yet");
         let questionSection = document.getElementById("questionSection") || alert("question section was not created yet");
-        let colors = ["#689eb8", "#ff5a60", "#8bc064", "#64c0bb", "#a664c0", "#ffdb5a", "#ff5a78"];
+        let colors = ["#689eb8", "#ff5a60", "#8bc064", "#ffdb5a", "#ff5a78", "#25c2ba", "#a27dd1", "#d17dc9", "#c43b5b", "#faa55a", "#c4b333", "#a7c433"];
         
         function getRandomColor()
         {
