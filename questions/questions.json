@@ -1,43 +1,36 @@
 [
     {
-        "contents" : "ile mam lat?",
-        "answers" : [ "13", "17", "13", "22" ],
+        "contents" : "Question 1",
+        "answers" : [ "Answer A", "Answer B", "Answer C", "Answer D" ],
         "correctAnswer" : 1,
-        "type" : "matfiz"
+        "type" : "Category 1"
     },
 
     {
-        "contents" : "jaki jest mój ulubiony przedmiot?",
-        "answers" : [ "matematyka", "informatyka", "fizyka" ],
+        "contents" : "Question 2<sup>2</sup>",
+        "answers" : [ "Answer A", "Answer B", "Answer C", "Answer D", "Answer E", "Answer F", "Answer G", "Answer H" ],
+        "correctAnswer" : 0,
+        "type" : "Category 1"
+    },
+
+    {
+        "contents" : "Question 3",
+        "answers" : [ "Answer A", "Answer B" ],
+        "correctAnswer" : 0,
+        "type" : "Category 2"
+    },
+
+    {
+        "contents" : "Question 4",
+        "answers" : [ "Answer A", "Answer B" ],
         "correctAnswer" : 1,
-        "type" : "matfiz"
+        "type" : "Category 2"
     },
 
     {
-        "contents" : "2<sup>2</sup>",
-        "answers" : [ "4", "3", "2", "1", "0", "100", "200", "9" ],
+        "contents" : "Question 5",
+        "answers" : [ "Answer A", "Answer B" ],
         "correctAnswer" : 0,
-        "type" : "matfiz"
-    },
-
-    {
-        "contents" : "mine",
-        "answers" : [ "maciek", "kuba" ],
-        "correctAnswer" : 0,
-        "type" : "human"
-    },
-
-    {
-        "contents" : "mine",
-        "answers" : [ "craft", "kuba" ],
-        "correctAnswer" : 1,
-        "type" : "human"
-    },
-
-    {
-        "contents" : "J",
-        "answers" : [ "D", "P" ],
-        "correctAnswer" : 0,
-        "type" : "wiedza powszechna"
+        "type" : "Category 3"
     }
 ]
