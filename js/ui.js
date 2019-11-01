@@ -72,13 +72,15 @@ function createFileInput()
     return fileInputSection;
 }
 
-function createPlayersInput()
+function createPlayersInput(parsedJSON)
 {
     let playersInputSection = document.createElement("form");
     let playersList = document.createElement("section");
     let playerInputName = document.createElement("input");
-    let playerInputCategory = document.createElement("input");
+    let playerInputCategory = document.createElement("select");
     let players = document.createElement("section");
+    let categoryPlaceholder = document.createElement("option");
+    let categories = [];
 
     let addButton = createButton("dodaj gracza", "background: #8bc064; width: 100%; margin: 10px 0; height: 6vh; min-height: 40px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>{
         let pIN = document.getElementById("playerInputName");
@@ -86,8 +88,8 @@ function createPlayersInput()
         let pL = document.getElementById("playersList");
 
         if(pIN.value && pIC.value){
-            pL.innerHTML += "<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>" + escape(pIN.value) + "</div><div>(" + escape(pIC.value) + ")</div></div>"; //display in some other way;
-            players.innerHTML += "<div><div>" + escape(pIN.value) + "</div><div>" + escape(pIC.value) + "</div></div>";
+            pL.innerHTML += "<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>" + escape(pIN.value) + "</div><div>(" + pIC.value + ")</div></div>"; //display in some other way;
+            players.innerHTML += "<div><div>" + escape(pIN.value) + "</div><div>" + pIC.value + "</div></div>";
 
             pIN.value = "";
             pIC.value = "";
@@ -99,30 +101,53 @@ function createPlayersInput()
         //get types from questions and make a list out of them (not input type=text)
     });
 
+
+    for(let el of parsedJSON)
+    {
+        if(!categories.includes(el.type))
+        {
+            let category = document.createElement("option");
+            
+            category.value = el.type;
+            category.textContent = el.type;
+
+            category.style.cssText="color: gray; border-radius: 50px;";
+
+            playerInputCategory.appendChild(category);
+            categories.push(el.type);
+        }
+    }
+
     /*attributes*/
     playerInputName.id="playerInputName";
-    playerInputCategory.id="playerInputCategory";
+    playerInputName.placeholder="nazwa";
+    playerInputName.maxLength="16";
+
     playersList.id="playersList";
+
     players.id="players";
 
-    playerInputName.placeholder="nazwa";
-    playerInputCategory.placeholder="kategoria";
+    playerInputCategory.id="playerInputCategory";
 
-    playerInputName.maxLength="16";
-    playerInputCategory.maxLength="16";
+    categoryPlaceholder.textContent="kategoria";
+    categoryPlaceholder.value="";
+    categoryPlaceholder.selected="selected";
+    categoryPlaceholder.disabled="disabled";
+    categoryPlaceholder.hidden="hidden";
 
     addButton.type="submit";
 
     /*css*/
     playersInputSection.style.cssText="width: 20vw; min-width: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center;";
     playersList.style.cssText="width: 100%; height: 30vh; margin: 0 0 10px 0; max-height: 300px; min-height: 40px; font-size: 1.1rem; overflow-y: auto; overflow-x: hidden; color: #f3f4f6; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; align-content: center;";
-    playerInputName.style.cssText="margin: 10px 0; width: 100%; height: 6vh; min-height: 40px; font-size: 1.1rem; border-radius: 50px; border: 0; text-align: center;";
-    playerInputCategory.style.cssText="margin: 10px 0; width: 100%; height: 6vh; min-height: 40px; font-size: 1.1rem; border-radius: 50px; border: 0; text-align: center;";
+    playerInputName.style.cssText="background: #fff; color: gray; margin: 10px 0; width: 100%; height: 6vh; min-height: 40px; font-size: 1.1rem; border-radius: 50px; border: 0; text-align: center;";
+    playerInputCategory.style.cssText=" -moz-appearance: none; -webkit-appearance: none; appearance: none; background: #fff; text-align-last:center; cursor: pointer; margin: 10px 0; width: 100%; height: 6vh; min-height: 40px; font-size: 1.1rem; border-radius: 50px; border: 0; outline: none; color: gray;";
     players.style.cssText="display: none";
 
     /*event listeners*/
     playersInputSection.addEventListener("submit", (e)=>e.preventDefault());
 
+    playerInputCategory.prepend(categoryPlaceholder);
     playersInputSection.appendChild(players);
     playersInputSection.appendChild(playersList);
     playersInputSection.appendChild(playerInputName);

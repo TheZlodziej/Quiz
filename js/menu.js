@@ -32,12 +32,12 @@ function showQuestionsInput()
     document.body.prepend(fileInputSection);
 }
 
-function showPlayersInput(parsedJson)
+function showPlayersInput(parsedJSON)
 {
     clearBody();
     let playersInputSection = document.createElement("section");
-    let playersInput = createPlayersInput();
-    let startButton = createButton("rozpocznij", "background: #689eb8; width: 20vw; min-width: 200px; font-size: 1.1rem; height: 7vh; min-height: 40px; color: #f3f4f6; border-radius: 50px; text-transform: uppercase; font-weight: bold;", ()=>loadPlayers(parsedJson));
+    let playersInput = createPlayersInput(parsedJSON);
+    let startButton = createButton("rozpocznij", "background: #689eb8; width: 20vw; min-width: 200px; font-size: 1.1rem; height: 7vh; min-height: 40px; color: #f3f4f6; border-radius: 50px; text-transform: uppercase; font-weight: bold;", ()=>loadPlayers(parsedJSON));
     /*css*/
     playersInputSection.style.cssText="height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center;";
 
@@ -87,6 +87,7 @@ function loadPlayers(parsedJSON)
     let playerAttributes = e.childNodes;
     players.push(new Player(playerAttributes[0].textContent, playerAttributes[1].textContent)); 
   }
+
   if(Array.isArray(players) && players.length)
   {
     initGame(parsedJSON, players);

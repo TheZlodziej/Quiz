@@ -11,19 +11,16 @@ class Game
     //  ONHOVER EVENTS TO BUTTONS
     //  ??? MORE POINTS FOR NON-PLAYER-TYPE QUESTION ???
 
-    players = [];
-    nonSortedQuestions = [];
-    questions = [];
-    gameSection;
-
-    currentPlayer = 0;
-    currentQuestion = [];
-    types = [];
-    currentType = 0;
-
     constructor(players, questions)
     {
        this.players = players;
+       this.nonSortedQuestions = [];
+       this.gameSection;
+       this.questions = [];
+       this.currentPlayer = 0;
+       this.currentQuestion = [];
+       this.types = [];
+       this.currentType = 0;
 
         for(let el of questions)
         {
@@ -62,17 +59,6 @@ class Game
         }
     }
 
-    isType(type)
-    {
-        for(let el of this.types)
-        {   
-            if(el == type)
-                return true;
-        }
-
-        return false;
-    }
-
     addQuestionToType(q)
     {
         for(let i in this.types)
@@ -89,7 +75,7 @@ class Game
     {
         for(let el of this.nonSortedQuestions)
         {
-            if(!this.isType(el.type))
+            if(!this.types.includes(el.type))
             {
                 this.types.push(el.type);
                 this.questions.push([]);
