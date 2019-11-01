@@ -29,7 +29,7 @@
 
     {
         "contents" : "Question 5",
-        "answers" : [ "Answer A", "Answer B" ],
+        "answers" : [ "Answer A", "Answer B", "Answer C" ],
         "correctAnswer" : 0,
         "type" : "Category 3"
     }
