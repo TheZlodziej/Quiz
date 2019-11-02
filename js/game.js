@@ -114,7 +114,7 @@ class Game
         /*css*/
         gameSection.style.cssText = "color: #f3f4f6; width: 100%; height: 100vh; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-items: center;";
         questionSection.style.cssText = "font-size: 2.3rem; width: 90%; height: 45vh; text-align: center; display: flex; justify-content: center; align-items: center;";
-        answersSection.style.cssText = "overflow-y: auto; overflow-x: hidden; width: 90%; height: 40vh; margin-top: 5vh; display: flex; justify-content: space-evenly; align-content: space-around; flex-wrap: wrap;";
+        answersSection.style.cssText = "overflow-y: auto; overflow-x: hidden; width: 90%; height: 40vh; margin-top: 5vh; display: flex; flex-wrap: wrap;";
         typesSection.style.cssText = "width: 200px; background: purple; position: absolute; top: 5vh; right: 10%;";
         scoreboardSection.style.cssText = "position: absolute; left: 10%; top: 5vh; width: 150px; background: orange;";
 
