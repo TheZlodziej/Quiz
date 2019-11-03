@@ -67,7 +67,7 @@ function loadFile()
     {
       let fileContent = e.target.result;
       let parsedJSON = JSON.parse(fileContent);
-      //next button?
+      //TODO: chect if questions are valid
       if(Array.isArray(parsedJSON) && parsedJSON.length)
       {
         showPlayersInput(parsedJSON);
@@ -108,7 +108,8 @@ function initGame(questions, players = [new Player("undefined_player", "undefine
 
 function createQuestions()
 {
-    console.log("create questions");
-    //create questions here
+    clearBody();
+    messageBox("not added just yet!");
+    let creatorSection = createQuestionsSection();
 }
 

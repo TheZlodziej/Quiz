@@ -20,6 +20,7 @@ function messageBox(message)
     let closeButton = createButton("x", "position: absolute; font-size: 1em; top: 5px; right: 5px; background: transparent; color: #f3f4f6; width: 20px; height: 20px;", ()=>{
         let messageBox_ = document.getElementById(uID);
         messageBox_.style.opacity = 0;
+        closeButton.disabled = true;
         setTimeout(function(){messageBox_.remove();}, 500);
     });
 
@@ -101,6 +102,7 @@ function createPlayersInput(parsedJSON)
         //get types from questions and make a list out of them (not input type=text)
     });
 
+    //TODO: hide HTML select tag and style your own one with so it's cross platform styled
 
     for(let el of parsedJSON)
     {
@@ -170,6 +172,19 @@ function createButton(text, styles = "", onClickEvent = ()=>{return})
     button.addEventListener("click", onClickEvent);
 
     return button;
+}
+
+function createQuestionsSection()
+{
+    let questionsSection = document.createElement("section");
+    
+    /*attributes*/
+
+    /*css*/
+
+    /*event listeners*/
+
+    return questionsSection;
 }
 
 function clearBody()
