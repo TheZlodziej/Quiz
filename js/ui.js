@@ -177,14 +177,69 @@ function createButton(text, styles = "", onClickEvent = ()=>{return})
 function createQuestionsSection()
 {
     let questionsSection = document.createElement("section");
-    
+    let readyQuestionsSection = document.createElement("section");
+    let addQuestionSection = document.createElement("section");
+    let qContents = document.createElement("input");
+    let qType = document.createElement("input");
+    let qAnswersSection = document.createElement("section");
+    let qAnswerContents = document.createElement("input");
+    let qCorrectAnswerSection = document.createElement("section");
+        let qCorrectAnswerLabel = document.createElement("label");
+        let qCorrectAnswerCheckbox = document.createElement("input");
+        let addAnswerButton = createButton("+", "vertical-align: sub; line-height: 9px; background: #ff5a60; font-weight: bold; color: #f3f4f6; font-size: 1.5rem; width: 30px; height: 30px; border-radius: 50%;");
+    let addQuestionButton = createButton("Dodaj pytanie", "width: 100%; height: 6vh; min-height: 40px; margin: 10% 0 0 0; border-radius: 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; color: #f3f4f6; background: #8bc064;");
+    let downloadQuestionsButton = createButton("Pobierz pytania", "");
+
     /*attributes*/
+    qContents.id="questionContents";
+    qType.id="questionType";
+    qAnswersSection.id="questionAnswersSection";
+    qAnswerContents.id="qAnswerContents";
+    qCorrectAnswerCheckbox.id="qCorrectAnswer";
+
+    qCorrectAnswerLabel.for="qCorrectAnswer";
+
+    qContents.placeholder="Treść";
+    qType.placeholder="Kategoria";
+    qAnswerContents.placeholder="Odpowiedź";
+
+    qCorrectAnswerCheckbox.type="checkbox";
+    qCorrectAnswerLabel.textContent="Poprawna odpowiedź";
 
     /*css*/
+    questionsSection.style.cssText="width:100vw; height: 100vh; display: flex; justify-content: center; align-items: center; ";
+    readyQuestionsSection.style.cssText="display: none; background: red; min-width: 100px; width: 10vw; height: 100vh; position: fixed; left: 0; top: 0;";
+    addQuestionSection.style.cssText="background: blue; min-width: 300px; min-height: 500px; width: 20vw; height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center;";
 
+    qContents.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
+    qType.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
+    qAnswerContents.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
+
+    qAnswersSection.style.cssText="height: 30%; width: 100%; min-height: 150px; overflow-x: hidden; overflow-y: auto;"
+    qCorrectAnswerSection.style.cssText="width: 100%; display: flex; align-items: center; justify-content: center;";
+    qCorrectAnswerLabel.style.cssText="color: #fff; margin-right: 20px;";
+    qCorrectAnswerCheckbox.style.cssText="background; #fff; width: 25px; height: 25px; margin-right: 7px; cursor: pointer;"
+    
     /*event listeners*/
 
-    return questionsSection;
+    readyQuestionsSection.appendChild(downloadQuestionsButton);
+
+    qCorrectAnswerSection.appendChild(qCorrectAnswerCheckbox);
+    qCorrectAnswerSection.appendChild(qCorrectAnswerLabel);
+    qCorrectAnswerSection.appendChild(addAnswerButton);
+
+    addQuestionSection.appendChild(qContents);
+    addQuestionSection.appendChild(qType);
+    addQuestionSection.appendChild(qAnswersSection);
+    addQuestionSection.appendChild(qAnswerContents);
+    addQuestionSection.appendChild(qCorrectAnswerSection);
+
+    addQuestionSection.appendChild(addQuestionButton);
+
+    questionsSection.appendChild(readyQuestionsSection);
+    questionsSection.appendChild(addQuestionSection);
+
+    document.body.prepend(questionsSection);
 }
 
 function clearBody()

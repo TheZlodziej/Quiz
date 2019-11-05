@@ -109,7 +109,6 @@ function initGame(questions, players = [new Player("undefined_player", "undefine
 function createQuestions()
 {
     clearBody();
-    messageBox("not added just yet!");
-    let creatorSection = createQuestionsSection();
+    createQuestionsSection();
 }
 
