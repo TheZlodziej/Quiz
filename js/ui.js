@@ -16,7 +16,7 @@ function messageBox(message)
     let alertArea = document.getElementById("alertArea") || document.createElement("section");
     let messageBox = document.createElement("section");
     let mMessage = document.createElement("section");
-    let uID = '_' + Math.random().toString(36).substr(2, 9);
+    let uID = uID();
     let closeButton = createButton("x", "position: absolute; font-size: 1em; top: 5px; right: 5px; background: transparent; color: #f3f4f6; width: 20px; height: 20px;", ()=>{
         let messageBox_ = document.getElementById(uID);
         messageBox_.style.opacity = 0;
@@ -44,6 +44,11 @@ function messageBox(message)
             messageBox.remove()
         },500); 
     }, 8000);
+}
+
+function uID()
+{
+    return '_' + Math.random().toString(36).substr(2, 9);
 }
 
 function createFileInput()
@@ -84,18 +89,14 @@ function createPlayersInput(parsedJSON)
     let categories = [];
 
     let addButton = createButton("dodaj gracza", "background: #8bc064; width: 100%; margin: 10px 0; height: 6vh; min-height: 40px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>{
-        let pIN = document.getElementById("playerInputName");
-        let pIC = document.getElementById("playerInputCategory");
-        let pL = document.getElementById("playersList");
+        if(playerInputName.value && playerInputCategory.value){
+            playersList.innerHTML += "<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>" + escape(playerInputName.value) + "</div><div>(" + playerInputCategory.value + ")</div></div>"; //display in some other way;
+            players.innerHTML += "<div><div>" + escape(playerInputName.value) + "</div><div>" + playerInputCategory.value + "</div></div>";
 
-        if(pIN.value && pIC.value){
-            pL.innerHTML += "<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>" + escape(pIN.value) + "</div><div>(" + pIC.value + ")</div></div>"; //display in some other way;
-            players.innerHTML += "<div><div>" + escape(pIN.value) + "</div><div>" + pIC.value + "</div></div>";
+            playerInputName.value = "";
+            playerInputCategory.value = "";
 
-            pIN.value = "";
-            pIC.value = "";
-
-            pIN.focus();
+            playerInputName.focus();
         } else {
             messageBox("Uzupełnij puste miejsca!");
         }
@@ -174,6 +175,12 @@ function createButton(text, styles = "", onClickEvent = ()=>{return})
     return button;
 }
 
+
+function trimText(text, length, ending = "...")
+{
+    return text.length <= length ? text : text.slice(0, length) + ending;
+}
+
 function createQuestionsSection()
 {
     let questionsSection = document.createElement("section");
@@ -186,14 +193,35 @@ function createQuestionsSection()
     let qCorrectAnswerSection = document.createElement("section");
         let qCorrectAnswerLabel = document.createElement("label");
         let qCorrectAnswerCheckbox = document.createElement("input");
-        let addAnswerButton = createButton("+", "vertical-align: sub; line-height: 9px; background: #ff5a60; font-weight: bold; color: #f3f4f6; font-size: 1.5rem; width: 30px; height: 30px; border-radius: 50%;");
+        let addAnswerButton = createButton("+", "vertical-align: sub; line-height: 9px; background: #ff5a60; font-weight: bold; color: #f3f4f6; font-size: 1.5rem; width: 30px; height: 30px; border-radius: 50%;", ()=>{
+            if(qAnswerContents && qAnswerContents.value)
+            {   
+                let btnID = uID();
+                
+                //przycisk musi miec id i to ukryte tez musi miec id i wtedy oba usunac (wrzucic w imputy i usunac stare)
+                let qAnswerBtn = createButton(trimText(qAnswerContents.value, 10), "", ()=>{
+                    document.getElementById(btnID).remove();
+                    //if ten co usunales mial checkbox na true to wtedy daj checkbox disabled na false
+                });
+
+                qAnswerBtn.id=btnID;
+                qAnswersSection.appendChild(qAnswerBtn);
+
+                qCorrectAnswerCheckbox.checked = false;
+                qCorrectAnswerCheckbox.disabled = true;
+                qAnswerContents.value = "";
+                qAnswerContents.focus;
+            } else {
+                messageBox("Dodaj treść odpowiedzi!");
+            }
+        });
     let addQuestionButton = createButton("Dodaj pytanie", "width: 100%; height: 6vh; min-height: 40px; margin: 10% 0 0 0; border-radius: 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; color: #f3f4f6; background: #8bc064;");
     let downloadQuestionsButton = createButton("Pobierz pytania", "");
 
     /*attributes*/
     qContents.id="questionContents";
     qType.id="questionType";
-    qAnswersSection.id="questionAnswersSection";
+    qAnswersSection.id="qAnswersSection";
     qAnswerContents.id="qAnswerContents";
     qCorrectAnswerCheckbox.id="qCorrectAnswer";
 
