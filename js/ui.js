@@ -16,9 +16,9 @@ function messageBox(message)
     let alertArea = document.getElementById("alertArea") || document.createElement("section");
     let messageBox = document.createElement("section");
     let mMessage = document.createElement("section");
-    let uID = uID();
+    let uID_ = uID();
     let closeButton = createButton("x", "position: absolute; font-size: 1em; top: 5px; right: 5px; background: transparent; color: #f3f4f6; width: 20px; height: 20px;", ()=>{
-        let messageBox_ = document.getElementById(uID);
+        let messageBox_ = document.getElementById(uID_);
         messageBox_.style.opacity = 0;
         closeButton.disabled = true;
         setTimeout(function(){messageBox_.remove();}, 500);
@@ -26,7 +26,7 @@ function messageBox(message)
 
     /*attributes*/
     alertArea.id="alertArea";
-    messageBox.id = uID;
+    messageBox.id = uID_;
     mMessage.textContent = message;
 
     /*css*/
@@ -90,8 +90,8 @@ function createPlayersInput(parsedJSON)
 
     let addButton = createButton("dodaj gracza", "background: #8bc064; width: 100%; margin: 10px 0; height: 6vh; min-height: 40px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>{
         if(playerInputName.value && playerInputCategory.value){
-            playersList.innerHTML += "<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>" + escape(playerInputName.value) + "</div><div>(" + playerInputCategory.value + ")</div></div>"; //display in some other way;
-            players.innerHTML += "<div><div>" + escape(playerInputName.value) + "</div><div>" + playerInputCategory.value + "</div></div>";
+            playersList.innerHTML += `<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>${escape(playerInputName.value)}</div><div>(${playerInputCategory.value})</div></div>`; //display in some other way;
+            players.innerHTML += `<div><div>${escape(playerInputName.value)}</div><div>${playerInputCategory.value}</div></div>`;
 
             playerInputName.value = "";
             playerInputCategory.value = "";
@@ -183,6 +183,8 @@ function trimText(text, length, ending = "...")
 
 function createQuestionsSection()
 {
+    let questions = document.createElement("section");
+    let answers = document.createElement("section");
     let questionsSection = document.createElement("section");
     let readyQuestionsSection = document.createElement("section");
     let addQuestionSection = document.createElement("section");
@@ -197,32 +199,134 @@ function createQuestionsSection()
             if(qAnswerContents && qAnswerContents.value)
             {   
                 let btnID = uID();
-                
-                //przycisk musi miec id i to ukryte tez musi miec id i wtedy oba usunac (wrzucic w imputy i usunac stare)
+                let aID = uID();
+
                 let qAnswerBtn = createButton(trimText(qAnswerContents.value, 10), "", ()=>{
+                    let answer = document.getElementById(aID);
+
+                    if(answer.childNodes[1].textContent=="true" ? true : false)
+                    {
+                        qCorrectAnswerCheckbox.disabled = false;
+                    }
+
+                    qAnswerContents.value=answer.childNodes[0].textContent;
+                    qCorrectAnswerCheckbox.checked = answer.childNodes[1].textContent=="true" ? true : false;
+
                     document.getElementById(btnID).remove();
-                    //if ten co usunales mial checkbox na true to wtedy daj checkbox disabled na false
+                    answer.remove();
                 });
 
                 qAnswerBtn.id=btnID;
-                qAnswersSection.appendChild(qAnswerBtn);
+                qAnswersSection.prepend(qAnswerBtn);
+                answers.innerHTML+=`<div id="${aID}"><div>${qAnswerContents.value}</div><div>${qCorrectAnswerCheckbox.checked}</div></div>`;
 
-                qCorrectAnswerCheckbox.checked = false;
-                qCorrectAnswerCheckbox.disabled = true;
+                if(qCorrectAnswerCheckbox.checked)
+                {
+                    qCorrectAnswerCheckbox.disabled = true;
+                    qCorrectAnswerCheckbox.checked = false;
+                }
+                
                 qAnswerContents.value = "";
                 qAnswerContents.focus;
             } else {
                 messageBox("Dodaj treść odpowiedzi!");
             }
         });
-    let addQuestionButton = createButton("Dodaj pytanie", "width: 100%; height: 6vh; min-height: 40px; margin: 10% 0 0 0; border-radius: 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; color: #f3f4f6; background: #8bc064;");
-    let downloadQuestionsButton = createButton("Pobierz pytania", "");
+
+    let addQuestionButton = createButton("Dodaj pytanie", "width: 100%; height: 6vh; min-height: 40px; margin: 10% 0 0 0; border-radius: 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; color: #f3f4f6; background: #8bc064;", ()=>{
+            if(qContents && qContents.value)
+            {
+                if(qType && qType.value)
+                {
+                    if(answers.hasChildNodes())
+                    {
+                        let readyAnswers = answers.childNodes;
+                        let areValid = false;
+
+                        for(let node of readyAnswers)
+                        {
+                            if(node.childNodes[1].textContent == "true")
+                            {
+                                areValid = true;
+                                break;
+                            }
+                        }
+
+                        if(areValid)
+                        {
+                            let qID = uID();
+                            let questionBtn = createButton(trimText(qContents.value, 10), "width: 100%; height: 30px;", ()=>{
+                                //add old values to the form in the middle
+                            });
+
+                            questions.innerHTML+=`<div id=${qID}><div>${qContents.value}</div><div>${qType.value}</div><div>${answers.innerHTML}</div></div>`
+
+                            qContents.value="";
+                            qType.value="";
+                            qAnswerContents.value="";
+                            qCorrectAnswerCheckbox.checked=false;
+                            qCorrectAnswerCheckbox.disabled=false;
+                            answers.innerHTML="";
+                            qAnswersSection.innerHTML="";
+
+                            readyQuestionsSection.prepend(questionBtn);
+
+                        } else { 
+                            messageBox("Dodaj przynajmniej jedną dobrą odpowiedź!");
+                        }
+                    } else {
+                        messageBox("Dodaj odpowiedzi do pytania!");
+                    }
+                } else {
+                    messageBox("Dodaj kategorię pytania!");
+                }
+            } else {
+                messageBox("Dodaj treść pytania!");
+            }
+    });
+
+    let downloadQuestionsButton = createButton("Pobierz pytania", "width: 100%; height: 30px;", ()=>{
+        if(questions.hasChildNodes()){
+            let textQuestions = questions.childNodes;
+            let questions_ = [];
+
+            for(let question of textQuestions)
+            {
+                //0-content, 1-type, 2-answers
+                let answersArray = [];
+                let correctAnswerIndex = 0;
+                console.log(question.childNodes[2]);
+                let textAnswers = question.childNodes[2].childNodes;
+                let index = 0;
+                for(let answer of textAnswers)
+                {
+                    answersArray.push(answer.childNodes[0].textContent);
+
+                    if(answer.childNodes[1].textContent=="true")
+                    {
+                        correctAnswerIndex = index;
+                    }
+
+                    index++;
+                }
+
+                questions_.push(new Question(question.childNodes[0].textContent, answersArray, correctAnswerIndex, question.childNodes[1].textContent));
+            }
+
+            /* credits: https://stackoverflow.com/questions/19721439/download-json-object-as-a-file-from-browser?lq=1 */
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(questions_));
+            let aDownload = document.createElement("a");
+            aDownload.setAttribute("href", dataStr);
+            aDownload.setAttribute("download", "pytania.json");
+            aDownload.click();
+
+        } else {
+            messageBox("Dodaj pytania!");
+        }
+    });
 
     /*attributes*/
-    qContents.id="questionContents";
-    qType.id="questionType";
-    qAnswersSection.id="qAnswersSection";
-    qAnswerContents.id="qAnswerContents";
+    //answers.id="answers";
     qCorrectAnswerCheckbox.id="qCorrectAnswer";
 
     qCorrectAnswerLabel.for="qCorrectAnswer";
@@ -236,18 +340,21 @@ function createQuestionsSection()
 
     /*css*/
     questionsSection.style.cssText="width:100vw; height: 100vh; display: flex; justify-content: center; align-items: center; ";
-    readyQuestionsSection.style.cssText="display: none; background: red; min-width: 100px; width: 10vw; height: 100vh; position: fixed; left: 0; top: 0;";
+    readyQuestionsSection.style.cssText="background: red; min-width: 100px; width: 10vw; height: 100vh; position: fixed; left: 0; top: 0;";
     addQuestionSection.style.cssText="background: blue; min-width: 300px; min-height: 500px; width: 20vw; height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center;";
 
     qContents.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
     qType.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
     qAnswerContents.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
 
-    qAnswersSection.style.cssText="height: 30%; width: 100%; min-height: 150px; overflow-x: hidden; overflow-y: auto;"
+    qAnswersSection.style.cssText="height: 30%; width: 100%; min-height: 150px; overflow-x: hidden; overflow-y: auto;";
     qCorrectAnswerSection.style.cssText="width: 100%; display: flex; align-items: center; justify-content: center;";
     qCorrectAnswerLabel.style.cssText="color: #fff; margin-right: 20px;";
-    qCorrectAnswerCheckbox.style.cssText="background; #fff; width: 25px; height: 25px; margin-right: 7px; cursor: pointer;"
+    qCorrectAnswerCheckbox.style.cssText="background; #fff; width: 25px; height: 25px; margin-right: 7px; cursor: pointer;";
     
+    questions.style.cssText="display: none;";
+    answers.style.cssText="display: none;";
+
     /*event listeners*/
 
     readyQuestionsSection.appendChild(downloadQuestionsButton);
@@ -264,6 +371,8 @@ function createQuestionsSection()
 
     addQuestionSection.appendChild(addQuestionButton);
 
+    questionsSection.appendChild(questions);
+    questionsSection.appendChild(answers);
     questionsSection.appendChild(readyQuestionsSection);
     questionsSection.appendChild(addQuestionSection);
 
