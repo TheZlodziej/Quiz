@@ -66,16 +66,17 @@ function createFileInput()
     fileInputLabel.innerHTML = "Wybierz plik z pytaniami";
 
     /*css*/
-    fileInput.style.cssText = "display: none;"; //add css
+    fileInputSection.style.cssText = "height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center;"
+    fileInput.style.cssText = "display: none;"; 
     fileInputLabel.style.cssText = "background: #ff5a60; padding: 15px 35px; border-radius: 50px; text-transform: uppercase; font-weight: bold; cursor: pointer; color: #f3f4f6; font-size: 1.1rem;";
 
     /*event listeners*/
-    fileInput.addEventListener('change', ()=>loadFile()); //start button?
+    fileInput.addEventListener('change', ()=>loadFile());
     
     fileInputSection.appendChild(fileInput);
     fileInputSection.appendChild(fileInputLabel);
 
-    return fileInputSection;
+    document.body.prepend(fileInputSection);
 }
 
 function createPlayersInput(parsedJSON)
@@ -179,6 +180,72 @@ function createButton(text, styles = "", onClickEvent = ()=>{return})
 function trimText(text, length, ending = "...")
 {
     return text.length <= length ? text : text.slice(0, length) + ending;
+}
+
+function loadingAnimation(length = 1000)
+{    
+    let animationContainer = document.createElement("section");
+    let labelContainer = document.createElement("section");
+    let loadingLabel = document.createElement("div");
+    let barContainer = document.createElement("section");
+    let loadingBar = document.createElement("div");
+    let barCover = document.createElement("div");
+    let barPercents = document.createElement("section");
+    let ending = document.createElement("div");
+
+    let percents = 0;
+
+    /*animation*/
+    let animation = setInterval(()=>{
+        percents++;
+
+        if(percents%9==0){
+            if(ending.textContent.length==1)
+            {
+                ending.textContent = "..";
+            } 
+            else if(ending.textContent.length==2) 
+            {
+                ending.textContent = "...";
+            } 
+            else {
+                ending.textContent = ".";
+            }
+        }
+
+        barPercents.textContent=`${percents}%`;
+        barCover.style.width=`${percents}%`;
+        if(percents==100)
+        {
+            clearInterval(animation);
+            setTimeout(()=>animationContainer.remove(), 500);
+        }
+    },length/100); //length divided by 100 - 1% == 1 frame
+
+    /*attributes*/
+    loadingLabel.textContent = "Ładowanie";
+    ending.textContent = ".";
+
+    /*css*/
+    animationContainer.style.cssText="position: fixed; top: 0; left: 0; z-index: 9999; width:100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background:radial-gradient(black 15%, transparent 16%) 0 0,radial-gradient(black 15%, transparent 16%) 8px 8px,radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;background-color:#282828;background-size:16px 16px;";
+    loadingLabel.style.cssText="color: #f3f4f6; font-size: 1.5em;";
+    loadingBar.style.cssText="margin: 20px 0; width: 24vw; min-width: 300px; height: 5vh; min-height: 40px; border-radius: 50px; background: linear-gradient(90deg, rgba(104,158,184,1) 10%, rgba(255,90,96,1) 50%, rgba(139,192,100,1) 90%);";
+    barContainer.style.cssText="width: 24vw; min-width: 300px;";
+    barCover.style.cssText="overflow: hidden; width: 0;";
+    barPercents.style.cssText="color: #f3f4f6;";
+    labelContainer.style.cssText="display: flex;"
+    ending.style.cssText="width: 20px; color: #f3f4f6; font-size: 1.5em;";
+
+    /*event listeners*/
+    barCover.appendChild(loadingBar);
+    barContainer.appendChild(barCover);
+    labelContainer.appendChild(loadingLabel);
+    labelContainer.appendChild(ending);
+    animationContainer.appendChild(labelContainer);
+    animationContainer.appendChild(barContainer);
+    animationContainer.appendChild(barPercents);
+
+    document.body.prepend(animationContainer);
 }
 
 function createQuestionsSection()
@@ -359,7 +426,6 @@ function createQuestionsSection()
     });
 
     /*attributes*/
-    //answers.id="answers";
     qCorrectAnswerCheckbox.id="qCorrectAnswer";
 
     qCorrectAnswerLabel.for="qCorrectAnswer";

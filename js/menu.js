@@ -21,15 +21,8 @@ function gameMenu()
 
 function showQuestionsInput()
 {
-    clearBody();
-    let fileInputSection = document.createElement("section");
-    let fileInput = createFileInput();
-
-    /*css*/
-    fileInputSection.style.cssText="height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center;";
-    
-    fileInputSection.appendChild(fileInput);
-    document.body.prepend(fileInputSection);
+  clearBody();
+  createFileInput();
 }
 
 function showPlayersInput(parsedJSON)
@@ -98,7 +91,7 @@ function loadPlayers(parsedJSON)
 
 function initGame(questions, players = [new Player("undefined_player", "undefined_category")]){
     clearBody();
-
+    
     let game = new Game(players, questions);
     if(game)
     {
