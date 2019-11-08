@@ -204,13 +204,13 @@ function createQuestionsSection()
                 let qAnswerBtn = createButton(trimText(qAnswerContents.value, 10), "", ()=>{
                     let answer = document.getElementById(aID);
 
-                    if(answer.childNodes[1].textContent=="true" ? true : false)
+                    if(answer.childNodes[1].textContent=="true")
                     {
                         qCorrectAnswerCheckbox.disabled = false;
                     }
 
                     qAnswerContents.value=answer.childNodes[0].textContent;
-                    qCorrectAnswerCheckbox.checked = answer.childNodes[1].textContent=="true" ? true : false;
+                    qCorrectAnswerCheckbox.checked = answer.childNodes[1].textContent=="true";
 
                     document.getElementById(btnID).remove();
                     answer.remove();
@@ -255,12 +255,46 @@ function createQuestionsSection()
                         if(areValid)
                         {
                             let qID = uID();
+                            let qBtnID = uID();
+
                             let questionBtn = createButton(trimText(qContents.value, 10), "width: 100%; height: 30px;", ()=>{
-                                //add old values to the form in the middle
+                                let question = document.getElementById(qID);
+
+                                qContents.value = question.childNodes[0].textContent;
+                                qType.value = question.childNodes[1].textContent;
+                            
+                                for(let answer of question.childNodes[2].childNodes)
+                                {
+                                    let aID = uID();
+                                    let btnID = uID();
+
+                                    let answerButton = createButton(trimText(answer.childNodes[0].textContent,10), "", ()=>{
+                                        let answer_ = document.getElementById(aID);
+
+                                        if(answer_.childNodes[1].textContent == "true")
+                                        {
+                                            qCorrectAnswerCheckbox.disabled = true;
+                                        }
+
+                                        qAnswerContents.value = answer_.childNodes[0].textContent;
+                                        qCorrectAnswerCheckbox.checked = answer_.childNodes[1].textContent == "true";
+                                        answer_.remove();
+                                        document.getElementById(btnID).remove();
+                                    });
+
+                                    answerButton.id=btnID;
+
+                                    answers.innerHTML+=`<div id="${aID}"><div>${answer.childNodes[0].textContent}</div><div>${answer.childNodes[1].textContent}</div></div>`;
+                                    qAnswersSection.prepend(answerButton);
+
+                                    document.getElementById(qID).remove();
+                                    document.getElementById(qBtnID).remove();
+                                }
                             });
 
                             questions.innerHTML+=`<div id=${qID}><div>${qContents.value}</div><div>${qType.value}</div><div>${answers.innerHTML}</div></div>`
 
+                            questionBtn.id=qBtnID;
                             qContents.value="";
                             qType.value="";
                             qAnswerContents.value="";
@@ -295,7 +329,6 @@ function createQuestionsSection()
                 //0-content, 1-type, 2-answers
                 let answersArray = [];
                 let correctAnswerIndex = 0;
-                console.log(question.childNodes[2]);
                 let textAnswers = question.childNodes[2].childNodes;
                 let index = 0;
                 for(let answer of textAnswers)
