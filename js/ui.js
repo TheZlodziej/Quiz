@@ -254,6 +254,7 @@ function createQuestionsSection()
     let answers = document.createElement("section");
     let questionsSection = document.createElement("section");
     let readyQuestionsSection = document.createElement("section");
+    let addQuestionSection_ = document.createElement("section"); //container for addQuestionSection form (so it doesn't resize on window change)
     let addQuestionSection = document.createElement("section");
     let qContents = document.createElement("input");
     let qType = document.createElement("input");
@@ -326,7 +327,7 @@ function createQuestionsSection()
                             let qID = uID();
                             let qBtnID = uID();
 
-                            let questionBtn = createButton(trimText(qContents.value, 10), "margin-top: 13px; width: 90%; min-height: 40px; height: 30px; border-radius: 50px; color: #f3f4f6; background: #8bc064;", ()=>{
+                            let questionBtn = createButton(trimText(qContents.value, 10), "margin-top: 13px; width: 90%; height: 40px; border-radius: 50px; color: #f3f4f6; background: #8bc064;", ()=>{
                                 let question = document.getElementById(qID);
 
                                 qContents.value = question.childNodes[0].textContent;
@@ -388,7 +389,7 @@ function createQuestionsSection()
             }
     });
 
-    let downloadQuestionsButton = createButton("Pobierz pytania", "border-radius: 50px; background: #ff5a60; color: #f3f4f6; text-transform: uppercase; font-weight: bold; width: 100%; max-width: 300px; height: 6vh; min-height: 35px;", ()=>{
+    let downloadQuestionsButton = createButton("Pobierz pytania", `border-radius: 50px; background: #ff5a60; color: #f3f4f6; text-transform: uppercase; font-weight: bold; ${window.innerWidth < 600 ? "width: 80%;" : "width: 100%;"} height: 6vh; min-height: 35px;`, ()=>{
         if(questions.hasChildNodes()){
             let textQuestions = questions.childNodes;
             let questions_ = [];
@@ -440,12 +441,13 @@ function createQuestionsSection()
     qCorrectAnswerLabel.textContent="Poprawna odpowiedź";
 
     /*css*/
-    questionsSection.style.cssText="width:100vw; height: 100vh; display: flex; justify-content: center; align-items: center; ";
-    rQdBtnSection.style.cssText="width: 15vw; min-width: 200px; height: 100vh; position: fixed; left: 0; top: 0; padding: 10px; display: flex; flex-direction: column;";
+    questionsSection.style.cssText="width:100vw; display: flex; flex-direction: column; justify-content: center; align-items: center;";
+    rQdBtnSection.style.cssText=`${window.innerWidth < 600 ? "width: 100vw;" : "position: fixed; top: 0; left: 0; width: 15vw; max-width: 300px;"} min-width: 200px; height: 100vh; padding: 10px; display: flex; flex-direction: column;`;
     addQuestionSection.style.cssText="min-width: 300px; min-height: 500px; width: 20vw; height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center;";
-    
-    readyQuestionsSection.style.cssText="overflow-y: overlay; overflow-x: hidden; width: 100%; height: 80%; position: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;";
-    downloadButtonSection.style.cssText="width: 100%; height: 20%; display: flex; align-items: center;";
+    addQuestionSection_.style.cssText="height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center;";
+
+    readyQuestionsSection.style.cssText="overflow-y: overlay; overflow-x: hidden; width: 100%; height: 80%; position: flex; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;";
+    downloadButtonSection.style.cssText="width: 100%; height: 20%; display: flex; align-items: center; justify-content: center;";
 
     qContents.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
     qType.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
@@ -460,6 +462,27 @@ function createQuestionsSection()
     answers.style.cssText="display: none;";
 
     /*event listeners*/
+    window.addEventListener("resize", ()=>{
+        if(window.innerWidth < 600)
+        {
+            downloadQuestionsButton.style.width = "80%";
+
+            rQdBtnSection.style.width = "100vw";
+            rQdBtnSection.style.position = "";
+            rQdBtnSection.style.maxWidth = "100vw";
+        }
+        else
+        {
+            downloadQuestionsButton.style.width = "100%";
+
+            rQdBtnSection.style.width = "15vw";
+            rQdBtnSection.style.maxWidth = "300px";
+            rQdBtnSection.style.position = "fixed";
+            rQdBtnSection.style.top = 0;
+            rQdBtnSection.style.left = 0;
+
+        }
+    });
 
     qCorrectAnswerSection.appendChild(qCorrectAnswerCheckbox);
     qCorrectAnswerSection.appendChild(qCorrectAnswerLabel);
@@ -472,6 +495,8 @@ function createQuestionsSection()
     addQuestionSection.appendChild(qCorrectAnswerSection);
     addQuestionSection.appendChild(addQuestionButton);
 
+    addQuestionSection_.appendChild(addQuestionSection);
+
     downloadButtonSection.appendChild(downloadQuestionsButton);
 
     rQdBtnSection.appendChild(readyQuestionsSection);
@@ -479,8 +504,8 @@ function createQuestionsSection()
 
     questionsSection.appendChild(questions);
     questionsSection.appendChild(answers);
+    questionsSection.appendChild(addQuestionSection_);
     questionsSection.appendChild(rQdBtnSection);
-    questionsSection.appendChild(addQuestionSection);
 
     document.body.prepend(questionsSection);
 }

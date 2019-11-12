@@ -2,7 +2,7 @@ function gameMenu()
 {
     let gameMenu = document.createElement("section");
 
-    let menuBtnStyles = "min-width: 200px; min-height: 40px; width: 20vw; height: 7vh; font-size: 1.1rem; margin: 10px 0; border-radius: 50px; font-weight: bold; color: #f3f4f6; text-transform: uppercase;";
+    let menuBtnStyles = "min-width: 300px; min-height: 40px; width: 20vw; height: 7vh; font-size: 1.1rem; margin: 10px 0; border-radius: 50px; font-weight: bold; color: #f3f4f6; text-transform: uppercase;";
     
     let startGameBtn = createButton("Rozpocznij", "background: #689eb8;"+menuBtnStyles, showQuestionsInput);
     let createQuestionsBtn = createButton("Twórz pytania", "background: #ff5a60;"+menuBtnStyles, createQuestions);

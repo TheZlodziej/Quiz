@@ -114,7 +114,7 @@ class Game
         /*css*/
         gameSection.style.cssText = "color: #f3f4f6; width: 100%; height: 100vh; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-items: center;";
         questionSection.style.cssText = "font-size: 2.3rem; width: 90%; height: 45vh; text-align: center; display: flex; justify-content: center; align-items: center;";
-        answersSection.style.cssText = "overflow-y: auto; overflow-x: hidden; width: 90%; height: 40vh; margin-top: 5vh; display: flex; flex-wrap: wrap;";
+        answersSection.style.cssText = "overflow-y: auto; overflow-x: hidden; width: 90%; height: 40vh; margin-top: 5vh; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;";
         typesSection.style.cssText = "width: 200px; background: purple; position: absolute; top: 5vh; right: 10%;";
         scoreboardSection.style.cssText = "position: absolute; left: 10%; top: 5vh; width: 150px; background: orange;";
 
@@ -166,29 +166,12 @@ class Game
             return color;
         }
 
-        function getAnswerLength()
-        {
-            if(window.innerWidth < 500)
-                return '100%';
-            
-            return '50%';
-        }
-
-        function getAnswerHeight()
-        {
-            if(window.innerWidth < 500)
-                return '7vh';
-            
-            return '30%';
-        }
-
         answersSection.innerHTML = ""; //remove old answers
         questionSection.innerHTML = this.questions[this.currentType][this.currentQuestion[this.currentType]].contents;
         
         for(let i in answers)
         {
-            //fix questions overflow (cant see some part of the questions if there's too many of them)
-            answersSection.appendChild(createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 200px; min-height: 40px; height: ${getAnswerHeight()}; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; width: calc(${getAnswerLength()} - 40px);text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>this.answerResult(i)));
+            answersSection.appendChild(createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 200px; min-height: 40px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"}; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>this.answerResult(i)));
         }
     }
 
