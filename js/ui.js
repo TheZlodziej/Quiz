@@ -89,8 +89,9 @@ function createPlayersInput(parsedJSON)
     let categoryPlaceholder = document.createElement("option");
     let categories = [];
 
-    let addButton = createButton("dodaj gracza", "background: #8bc064; width: 100%; margin: 10px 0; height: 6vh; min-height: 40px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>{
-        if(playerInputName.value && playerInputCategory.value){
+    let addButton = createButton("dodaj gracza", "background: #8bc064; margin: 10px 0; height: 50px; width: 300px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>{
+        if(playerInputName.value){
+            if(playerInputCategory.value){
             playersList.innerHTML += `<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>${escape(playerInputName.value)}</div><div>(${playerInputCategory.value})</div></div>`; //display in some other way;
             players.innerHTML += `<div><div>${escape(playerInputName.value)}</div><div>${playerInputCategory.value}</div></div>`;
 
@@ -98,13 +99,15 @@ function createPlayersInput(parsedJSON)
             playerInputCategory.value = "";
 
             playerInputName.focus();
+            } else {
+                messageBox("Wybierz kategorię gracza!");
+            }    
         } else {
-            messageBox("Uzupełnij puste miejsca!");
+            messageBox("Dodaj nazwę gracza!");
         }
-        //get types from questions and make a list out of them (not input type=text)
     });
 
-    //TODO: hide HTML select tag and style your own one with so it's cross platform styled
+    //TODO: hide HTML select tag and style your own one with so it's cross platform styled (?)
 
     for(let el of parsedJSON)
     {
@@ -144,8 +147,8 @@ function createPlayersInput(parsedJSON)
     /*css*/
     playersInputSection.style.cssText="width: 20vw; min-width: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center;";
     playersList.style.cssText="width: 100%; height: 30vh; margin: 0 0 10px 0; max-height: 300px; min-height: 40px; font-size: 1.1rem; overflow-y: auto; overflow-x: hidden; color: #f3f4f6; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; align-content: center;";
-    playerInputName.style.cssText="background: #fff; color: gray; margin: 10px 0; width: 100%; height: 6vh; min-height: 40px; font-size: 1.1rem; border-radius: 50px; border: 0; text-align: center;";
-    playerInputCategory.style.cssText=" -moz-appearance: none; -webkit-appearance: none; appearance: none; background: #fff; text-align-last:center; cursor: pointer; margin: 10px 0; width: 100%; height: 6vh; min-height: 40px; font-size: 1.1rem; border-radius: 50px; border: 0; outline: none; color: gray;";
+    playerInputName.style.cssText="background: #fff; color: gray; margin: 10px 0; height: 50px; width: 300px; font-size: 1.1rem; border-radius: 50px; border: 0; text-align: center;";
+    playerInputCategory.style.cssText=" -moz-appearance: none; -webkit-appearance: none; appearance: none; background: #fff; text-align-last:center; cursor: pointer; margin: 10px 0; height: 50px; width: 300px; font-size: 1.1rem; border-radius: 50px; border: 0; outline: none; color: gray;";
     players.style.cssText="display: none";
 
     /*event listeners*/
@@ -199,7 +202,7 @@ function loadingAnimation(length = 1000)
     let animation = setInterval(()=>{
         percents++;
 
-        if(percents%9==0){
+        if(percents%19==0){
             if(ending.textContent.length==1)
             {
                 ending.textContent = "..";
@@ -303,7 +306,7 @@ function createQuestionsSection()
             }
         });
 
-    let addQuestionButton = createButton("Dodaj pytanie", "width: 100%; height: 6vh; min-height: 40px; margin: 10% 0 0 0; border-radius: 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; color: #f3f4f6; background: #8bc064;", ()=>{
+    let addQuestionButton = createButton("Dodaj pytanie", "height: 50px; width: 300px; margin: 12% 0 0 0; border-radius: 40px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; color: #f3f4f6; background: #8bc064;", ()=>{
             if(qContents && qContents.value)
             {
                 if(qType && qType.value)
@@ -389,7 +392,7 @@ function createQuestionsSection()
             }
     });
 
-    let downloadQuestionsButton = createButton("Pobierz pytania", `border-radius: 50px; background: #ff5a60; color: #f3f4f6; text-transform: uppercase; font-weight: bold; ${window.innerWidth < 600 ? "width: 80%;" : "width: 100%;"} height: 6vh; min-height: 35px;`, ()=>{
+    let downloadQuestionsButton = createButton("Pobierz pytania", `border-radius: 50px; background: #ff5a60; color: #f3f4f6; text-transform: uppercase; font-weight: bold; ${window.innerWidth < 600 ? "width: 80%;" : "width: 100%;"} height: 42px;`, ()=>{
         if(questions.hasChildNodes()){
             let textQuestions = questions.childNodes;
             let questions_ = [];
@@ -449,9 +452,9 @@ function createQuestionsSection()
     readyQuestionsSection.style.cssText="overflow-y: overlay; overflow-x: hidden; width: 100%; height: 80%; position: flex; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;";
     downloadButtonSection.style.cssText="width: 100%; height: 20%; display: flex; align-items: center; justify-content: center;";
 
-    qContents.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
-    qType.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
-    qAnswerContents.style.cssText="width: 100%; background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; hieght: 6vh; min-height: 40px; text-align: center;";
+    qContents.style.cssText="background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; height: 50px; width: 300px; text-align: center;";
+    qType.style.cssText="background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; height: 50px; width: 300px; text-align: center;";
+    qAnswerContents.style.cssText="background: #fff; margin: 10px 0 15px 0; font-size: 1.1rem; border-radius: 50px; border: 0; height: 50px; width: 300px; text-align: center;";
 
     qAnswersSection.style.cssText="padding: 5px 0; display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; height: 30%; width: 100%; min-height: 150px; overflow-x: hidden; overflow-y: auto;";
     qCorrectAnswerSection.style.cssText="width: 100%; display: flex; align-items: center; justify-content: center;";

@@ -2,7 +2,7 @@ function gameMenu()
 {
     let gameMenu = document.createElement("section");
 
-    let menuBtnStyles = "min-width: 300px; min-height: 40px; width: 20vw; height: 7vh; font-size: 1.1rem; margin: 10px 0; border-radius: 50px; font-weight: bold; color: #f3f4f6; text-transform: uppercase;";
+    let menuBtnStyles = "width: 300px; height: 54px; font-size: 1.1rem; margin: 10px 0; border-radius: 50px; font-weight: bold; color: #f3f4f6; text-transform: uppercase;";
     
     let startGameBtn = createButton("Rozpocznij", "background: #689eb8;"+menuBtnStyles, showQuestionsInput);
     let createQuestionsBtn = createButton("Twórz pytania", "background: #ff5a60;"+menuBtnStyles, createQuestions);
@@ -30,7 +30,7 @@ function showPlayersInput(parsedJSON)
     clearBody();
     let playersInputSection = document.createElement("section");
     let playersInput = createPlayersInput(parsedJSON);
-    let startButton = createButton("rozpocznij", "background: #689eb8; width: 20vw; min-width: 200px; font-size: 1.1rem; height: 7vh; min-height: 40px; color: #f3f4f6; border-radius: 50px; text-transform: uppercase; font-weight: bold;", ()=>loadPlayers(parsedJSON));
+    let startButton = createButton("rozpocznij", "background: #689eb8; height: 54px; width: 300px; font-size: 1.1rem; color: #f3f4f6; border-radius: 50px; text-transform: uppercase; font-weight: bold;", ()=>loadPlayers(parsedJSON));
     /*css*/
     playersInputSection.style.cssText="height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center;";
 

@@ -1,14 +1,12 @@
 class Game
 {
     //TODO:
-    //  TIMER
     //  DISPLAYING WRONG/CORRECT ANSWER/NEXT QUESTION BUTTON
     //  DROPDOWN MENU:
     //    -> REMAKE GAME BUTTON
     //    -> CLOSE GAME BUTTON
-    //  QUESTION MAKER
     //  QUESTION EDITOR
-    //  ONHOVER EVENTS TO BUTTONS
+    //  STYLE INFO SECTION
     //  ??? MORE POINTS FOR NON-PLAYER-TYPE QUESTION ???
 
     constructor(players, questions)
@@ -90,40 +88,79 @@ class Game
         let gameSection = document.createElement("section");
         let questionSection = document.createElement("section");
         let answersSection = document.createElement("section");
-        let typesSection = document.createElement("section");
+        let typesSelect = document.createElement("select");
         let scoreboardSection = document.createElement("section");
-        
+        let infoBarSection = document.createElement("section");
+
         /*attributes*/
         gameSection.id="gameSection";
         questionSection.id="questionSection";
         answersSection.id="answersSection";
-        typesSection.id="typesSection";
         scoreboardSection.id="scoreboardSection";
         
         for(let i in this.types)
         {
-            this.currentQuestion.push(0);
+            this.currentQuestion.push(0); //sets every category question index to 0
 
-            typesSection.appendChild(
-                createButton(this.types[i], "width: 100%;", () => { 
-                    this.currentType = i; this.displayQuestion();
-                })
-            );
+            let typeOption = document.createElement("option");
+            typeOption.textContent = this.types[i];
+            typeOption.value = i;
+
+            typesSelect.appendChild(typeOption);
         }  
 
         /*css*/
-        gameSection.style.cssText = "color: #f3f4f6; width: 100%; height: 100vh; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-items: center;";
+        gameSection.style.cssText = `${window.innerWidth < 600 ? "height: 200vh;" : "height: 100vh;"} overflow-y: auto; color: #f3f4f6; width: 100%; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-items: center;`;
         questionSection.style.cssText = "font-size: 2.3rem; width: 90%; height: 45vh; text-align: center; display: flex; justify-content: center; align-items: center;";
         answersSection.style.cssText = "overflow-y: auto; overflow-x: hidden; width: 90%; height: 40vh; margin-top: 5vh; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;";
-        typesSection.style.cssText = "width: 200px; background: purple; position: absolute; top: 5vh; right: 10%;";
-        scoreboardSection.style.cssText = "position: absolute; left: 10%; top: 5vh; width: 150px; background: orange;";
+        infoBarSection.style.cssText = `${window.innerWidth < 600 ? "height: 100vh; flex-direction: column;" : "position: fixed; z-index: 999; top: 0; left: 0; height: 100px;" } display: flex; justify-content: center; width: 100vw;`;
+        typesSelect.style.cssText = `${window.innerWidth < 600 ? "width: 90%; " : "width: 10vw;"} min-width: 300px; cursor: pointer; height: 45px; font-size: 1.05em;`; //add styles
+        scoreboardSection.style.cssText = `${window.innerWidth < 600 ? "width: 90%;" : "width: 10vw;"} min-width: 300px;`; //add styles
+
 
         /*event listeners*/
+        window.addEventListener("resize", ()=>{
+            if(window.innerWidth < 600)
+            {
+                gameSection.style.height = "200vh";
+
+                infoBarSection.style.height = "100vh";
+                infoBarSection.style.flexDirection = "column";
+                infoBarSection.style.position = "static";
+
+                typesSelect.style.width= "90%";
+
+                scoreboardSection.style.width = "90%";
+            }
+
+            else 
+            {
+                gameSection.style.height = "100vh";
+
+                infoBarSection.style.height = "100px";
+                infoBarSection.style.flexDirection = "row";
+                infoBarSection.style.position = "fixed";
+                infoBarSection.style.zIndex = "999";
+                infoBarSection.style.top = "0";
+                infoBarSection.style.left = "0";
+
+                typesSelect.style.width = "10vw";
+
+                scoreboardSection.style.width = "10vw";
+            }
+        });
+
+        typesSelect.addEventListener("change", ()=>{
+            this.currentType = typesSelect.value;
+            this.displayQuestion();
+        });
+
+        infoBarSection.appendChild(scoreboardSection);
+        infoBarSection.appendChild(typesSelect);
 
         gameSection.appendChild(questionSection);
         gameSection.appendChild(answersSection);
-        gameSection.appendChild(typesSection);
-        gameSection.appendChild(scoreboardSection);
+        gameSection.appendChild(infoBarSection);
 
         return gameSection;
     }
@@ -171,7 +208,7 @@ class Game
         
         for(let i in answers)
         {
-            answersSection.appendChild(createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 200px; min-height: 40px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"}; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>this.answerResult(i)));
+            answersSection.appendChild(createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 300px; min-height: 40px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"};  max-height: 100px; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>this.answerResult(i)));
         }
     }
 
