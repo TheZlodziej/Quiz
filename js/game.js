@@ -45,7 +45,7 @@ class Game
             row.style.cssText = "width: 100%; display: flex; justify-content: space-between; align-items: center;";
 
             if(i == this.currentPlayer)
-                row.style.cssText += "color: red; border: 1px solid red;"; //if (player) turn, change his scoreboard color
+                row.style.cssText += "color: red; border-bottom: 1px solid red;"; //if (player) turn, change his scoreboard color
 
             playerNameSection.innerHTML = this.players[i].name;
             playerScoreSection.innerHTML = this.players[i].points;
@@ -110,12 +110,12 @@ class Game
         }  
 
         /*css*/
-        gameSection.style.cssText = `${window.innerWidth < 600 ? "height: 200vh;" : "height: 100vh;"} overflow-y: auto; color: #f3f4f6; width: 100%; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-items: center;`;
-        questionSection.style.cssText = "font-size: 2.3rem; width: 90%; height: 45vh; text-align: center; display: flex; justify-content: center; align-items: center;";
-        answersSection.style.cssText = "overflow-y: auto; overflow-x: hidden; width: 90%; height: 40vh; margin-top: 5vh; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;";
-        infoBarSection.style.cssText = `${window.innerWidth < 600 ? "height: 100vh; flex-direction: column;" : "position: fixed; z-index: 999; top: 0; left: 0; height: 100px;" } display: flex; justify-content: center; width: 100vw;`;
+        gameSection.style.cssText = `${window.innerWidth < 600 ? "height: 200vh;" : "height: 100vh;"} overflow-y: auto; color: #f3f4f6; width: 100%; display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: center;`;
+        questionSection.style.cssText = "box-sizing: content-box; font-size: 2.3rem; width: 90vw; height: 45vh; text-align: center; display: flex; justify-content: center; align-items: center;";
+        answersSection.style.cssText = "box-sizing: content-box; overflow-y: auto; overflow-x: hidden; width: 90vw; height: 40vh; margin-top: 5vh; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;";
+        infoBarSection.style.cssText = `${window.innerWidth < 600 ? "height: 100vh; flex-direction: column; justify-content: center; align-items: center;" : "position: fixed; z-index: 999; top: 0; max-height: 50vh; align-items: flex-start; justify-content: space-evenly;" } display: flex; width: 100vw;`;
         typesSelect.style.cssText = `${window.innerWidth < 600 ? "width: 90%; " : "width: 10vw;"} min-width: 300px; cursor: pointer; height: 45px; font-size: 1.05em;`; //add styles
-        scoreboardSection.style.cssText = `${window.innerWidth < 600 ? "width: 90%;" : "width: 10vw;"} min-width: 300px;`; //add styles
+        scoreboardSection.style.cssText = `${window.innerWidth < 600 ? "width: 90%;" : "width: 10vw;"} min-width: 300px; font-size: 1.2em; max-height: 40vh; overflow-y: auto; overflow-x: hidden;`; //add styles
 
 
         /*event listeners*/
@@ -124,25 +124,30 @@ class Game
             {
                 gameSection.style.height = "200vh";
 
+                infoBarSection.style.maxHeight = "unset";
                 infoBarSection.style.height = "100vh";
                 infoBarSection.style.flexDirection = "column";
                 infoBarSection.style.position = "static";
+                infoBarSection.style.justifyContent = "center";
+                infoBarSection.style.alignItems = "center";
 
-                typesSelect.style.width= "90%";
+                typesSelect.style.width= "90vw";
 
-                scoreboardSection.style.width = "90%";
+                scoreboardSection.style.width = "90vw";
             }
 
             else 
             {
                 gameSection.style.height = "100vh";
 
-                infoBarSection.style.height = "100px";
+                infoBarSection.style.maxHeight = "50vh";
                 infoBarSection.style.flexDirection = "row";
+                infoBarSection.style.height = "unset";
                 infoBarSection.style.position = "fixed";
                 infoBarSection.style.zIndex = "999";
                 infoBarSection.style.top = "0";
-                infoBarSection.style.left = "0";
+                infoBarSection.style.justifyContent = "space-evenly";
+                infoBarSection.style.alignItems = "flex-start";
 
                 typesSelect.style.width = "10vw";
 
@@ -208,7 +213,23 @@ class Game
         
         for(let i in answers)
         {
-            answersSection.appendChild(createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 300px; min-height: 40px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"};  max-height: 100px; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>this.answerResult(i)));
+            let answerBtn = createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 300px; min-height: 54px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"};  max-height: 100px; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>this.answerResult(i));
+            
+            window.addEventListener("resize", ()=>{
+                if(window.innerWidth < 600)
+                {
+                    answerBtn.style.height = "7vh";
+                    answerBtn.style.width = "calc(100% - 40px)";
+                }
+
+                else
+                {
+                    answerBtn.style.height = "30%";
+                    answerBtn.style.width = "calc(50% - 40px)";
+                }
+            });
+
+            answersSection.appendChild(answerBtn);
         }
     }
 
