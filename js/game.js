@@ -8,6 +8,7 @@ class Game
     //  QUESTION EDITOR
     //  STYLE INFO SECTION
     //  ??? MORE POINTS FOR NON-PLAYER-TYPE QUESTION ???
+    //  DIFFERENT COLOR FOR RIGHT ANSWER IN QUESTION CREATOR
 
     constructor(players, questions)
     {

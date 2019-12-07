@@ -152,6 +152,7 @@ function createPlayersInput(parsedJSON)
     players.style.cssText="display: none";
 
     /*event listeners*/
+    playerInputName.addEventListener("click", ()=>playerInputName.focus());
     playersInputSection.addEventListener("submit", (e)=>e.preventDefault());
 
     playerInputCategory.prepend(categoryPlaceholder);
@@ -486,6 +487,10 @@ function createQuestionsSection()
 
         }
     });
+
+    qContents.addEventListener("click", ()=>qContents.focus());
+    qType.addEventListener("click", ()=>qType.focus());
+    qAnswerContents.addEventListener("click", ()=>qAnswerContents.focus());
 
     qCorrectAnswerSection.appendChild(qCorrectAnswerCheckbox);
     qCorrectAnswerSection.appendChild(qCorrectAnswerLabel);
