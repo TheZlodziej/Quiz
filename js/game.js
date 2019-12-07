@@ -42,10 +42,10 @@ class Game
             let playerNameSection = document.createElement("section");
             let playerScoreSection = document.createElement("section");
 
-            row.style.cssText = "width: 100%; display: flex; justify-content: space-between; align-items: center;";
+            row.style.cssText = "width: 100%; display: flex; justify-content: space-between; align-items: center; margin: 0 0 5px 0";
 
             if(i == this.currentPlayer)
-                row.style.cssText += "color: red; border-bottom: 1px solid red;"; //if (player) turn, change his scoreboard color
+                row.style.cssText += "color: #ff5a60; border-bottom: 1px solid #ff5a60;"; //if (player) turn, change his scoreboard color
 
             playerNameSection.innerHTML = this.players[i].name;
             playerScoreSection.innerHTML = this.players[i].points;
@@ -113,7 +113,7 @@ class Game
         gameSection.style.cssText = `${window.innerWidth < 600 ? "height: 200vh;" : "height: 100vh;"} overflow-y: auto; color: #f3f4f6; width: 100%; display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: center;`;
         questionSection.style.cssText = "box-sizing: content-box; font-size: 2.3rem; width: 90vw; height: 45vh; text-align: center; display: flex; justify-content: center; align-items: center;";
         answersSection.style.cssText = "box-sizing: content-box; overflow-y: auto; overflow-x: hidden; width: 90vw; height: 40vh; margin-top: 5vh; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;";
-        infoBarSection.style.cssText = `${window.innerWidth < 600 ? "height: 100vh; flex-direction: column; justify-content: center; align-items: center;" : "position: fixed; z-index: 999; top: 0; max-height: 50vh; align-items: flex-start; justify-content: space-evenly;" } display: flex; width: 100vw;`;
+        infoBarSection.style.cssText = `${window.innerWidth < 600 ? "height: 100vh; flex-direction: column; justify-content: center; align-items: center;" : "position: fixed; z-index: 999; top: 50px; max-height: 50vh; align-items: flex-start; justify-content: space-between;" } padding: 0 5vw; display: flex; width: 90vw;`;
         typesSelect.style.cssText = `${window.innerWidth < 600 ? "width: 90%; " : "width: 10vw;"} min-width: 300px; cursor: pointer; height: 45px; font-size: 1.05em;`; //add styles
         scoreboardSection.style.cssText = `${window.innerWidth < 600 ? "width: 90%;" : "width: 10vw;"} min-width: 300px; font-size: 1.2em; max-height: 40vh; overflow-y: auto; overflow-x: hidden;`; //add styles
 
@@ -145,8 +145,8 @@ class Game
                 infoBarSection.style.height = "unset";
                 infoBarSection.style.position = "fixed";
                 infoBarSection.style.zIndex = "999";
-                infoBarSection.style.top = "0";
-                infoBarSection.style.justifyContent = "space-evenly";
+                infoBarSection.style.top = "50px";
+                infoBarSection.style.justifyContent = "space-between"; //"space-evenly";
                 infoBarSection.style.alignItems = "flex-start";
 
                 typesSelect.style.width = "10vw";
@@ -181,9 +181,16 @@ class Game
     answerResult(answer)
     {
         if(answer == this.questions[this.currentType][this.currentQuestion[this.currentType]].correctAnswer)
-        {
+        {  
             console.log("correct answer"); //displayCorrectAnswer???
-            this.players[this.currentPlayer].points++;
+            if(this.players[this.currentPlayer].type === this.questions[this.currentType][this.currentQuestion[this.currentType]].type)
+            {
+                //if question is from player's category give 1 point
+                this.players[this.currentPlayer].points++;
+            } else {
+                //else give 2 points
+                this.players[this.currentPlayer].points += 2;
+            }
         } else {
             console.log("wrong answer");
         }
