@@ -113,9 +113,9 @@ class Game
         gameSection.style.cssText = `${window.innerWidth < 600 ? "height: 200vh;" : "height: 100vh;"} overflow-y: auto; color: #f3f4f6; width: 100%; display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: center;`;
         questionSection.style.cssText = "box-sizing: content-box; font-size: 2.3rem; width: 90vw; height: 45vh; text-align: center; display: flex; justify-content: center; align-items: center;";
         answersSection.style.cssText = "box-sizing: content-box; overflow-y: auto; overflow-x: hidden; width: 90vw; height: 40vh; margin-top: 5vh; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;";
-        infoBarSection.style.cssText = `${window.innerWidth < 600 ? "height: 100vh; flex-direction: column; justify-content: center; align-items: center;" : "position: fixed; z-index: 999; top: 50px; max-height: 50vh; align-items: flex-start; justify-content: space-between;" } padding: 0 5vw; display: flex; width: 90vw;`;
-        typesSelect.style.cssText = `${window.innerWidth < 600 ? "width: 90%; " : "width: 10vw;"} min-width: 300px; cursor: pointer; height: 45px; font-size: 1.05em;`; //add styles
-        scoreboardSection.style.cssText = `${window.innerWidth < 600 ? "width: 90%;" : "width: 10vw;"} min-width: 300px; font-size: 1.2em; max-height: 40vh; overflow-y: auto; overflow-x: hidden;`; //add styles
+        infoBarSection.style.cssText = `${window.innerWidth < 600 ? "height: 100vh; flex-direction: column; justify-content: flex-start; align-items: center;" : "position: fixed; z-index: 999; top: 50px; max-height: 50vh; align-items: flex-start; justify-content: space-between;" } padding: 0 5vw; display: flex; width: 90vw;`;
+        typesSelect.style.cssText = `${window.innerWidth < 600 ? "width: 90%; margin: 30px 0 0 0;" : "width: 10vw;"} min-width: 300px; cursor: pointer; height: 45px; font-size: 1.05em;`; //add styles
+        scoreboardSection.style.cssText = `${window.innerWidth < 600 ? "width: 90%; margin: 100px 0 0 0;" : "width: 10vw;"} min-width: 300px; font-size: 1.2em; max-height: 40vh; overflow-y: auto; overflow-x: hidden;`; //add styles
 
 
         /*event listeners*/
@@ -128,12 +128,14 @@ class Game
                 infoBarSection.style.height = "100vh";
                 infoBarSection.style.flexDirection = "column";
                 infoBarSection.style.position = "static";
-                infoBarSection.style.justifyContent = "center";
+                infoBarSection.style.justifyContent = "flex-start";
                 infoBarSection.style.alignItems = "center";
 
                 typesSelect.style.width= "90vw";
+                typesSelect.style.margin = "30px 0 0 0";
 
                 scoreboardSection.style.width = "90vw";
+                scoreboardSection.style.margin = "100px 0 0 0";
             }
 
             else 
@@ -150,8 +152,10 @@ class Game
                 infoBarSection.style.alignItems = "flex-start";
 
                 typesSelect.style.width = "10vw";
+                typesSelect.style.margin = "0";
 
                 scoreboardSection.style.width = "10vw";
+                scoreboardSection.style.margin = "0";
             }
         });
 
