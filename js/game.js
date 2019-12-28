@@ -5,10 +5,8 @@ class Game
     //  DROPDOWN MENU:
     //    -> REMAKE GAME BUTTON
     //    -> CLOSE GAME BUTTON
+    //  FIX CREATE QUESTION CONTENTS INPUT!!!
     //  QUESTION EDITOR
-    //  STYLE INFO SECTION
-    //  ??? MORE POINTS FOR NON-PLAYER-TYPE QUESTION ???
-    //  DIFFERENT COLOR FOR RIGHT ANSWER IN QUESTION CREATOR
 
     constructor(players, questions)
     {
