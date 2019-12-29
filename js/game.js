@@ -1,11 +1,11 @@
 class Game
 {
     //TODO:
-    //  DISPLAYING WRONG/CORRECT ANSWER/NEXT QUESTION BUTTON
     //  DROPDOWN MENU:
     //    -> REMAKE GAME BUTTON
     //    -> CLOSE GAME BUTTON
     //  QUESTION EDITOR
+    //  BACK BUTTON
 
     constructor(players, questions)
     {
@@ -23,9 +23,46 @@ class Game
             let question = new Question(el.contents, el.answers, el.correctAnswer, el.type);
             this.nonSortedQuestions.push(question);
         }
-
         this.sortQuestions();
         this.gameSection = this.createGameSection();
+        this.nextQuestionButton = this.createNextQuestionSection();
+    }
+
+    createNextQuestionSection()
+    {
+        let nextQuestionButtonSection = document.createElement("section");
+        let nextQuestionButton = createButton("Przejdź do następnego pytania!", `${window.innerWidth < 600? "font-size: 1em;" : "font-size: 1.2em;"}background: #68b86c; color: #f3f4f6; text-transform: uppercase; font-weight: bold; border-radius: 50px; paddin: 5px 20px; width: 80%; height: 70px;`, ()=>this.nextQuestion());
+        
+        /*attributes*/
+
+        /*css*/
+        nextQuestionButtonSection.style.cssText = `${window.innerWidth < 600 ? "top: 25%; width: 90vw; max-width: 600px; height: 160px;" : "top: 50%; width: 50vw; max-width: 700px; height: 200px;" } display: flex; align-items: center; justify-content: center; background: #3d3d3d; border-radius: 10px; position: absolute; left: 50%; transform: translate(-50%, -50%); z-index: 999; box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);`;
+
+        /*event listeners*/
+        window.addEventListener("resize", ()=>{
+            if(window.innerWidth < 600)
+            {
+                nextQuestionButtonSection.style.width = "90vw";
+                nextQuestionButtonSection.style.maxWidth = "600px";
+                nextQuestionButtonSection.style.height = "160px";
+                nextQuestionButtonSection.style.top = "25%";
+
+                nextQuestionButton.style.fontSize="1em";
+            }
+            else
+            {
+                nextQuestionButtonSection.style.width = "50vw";
+                nextQuestionButtonSection.style.maxWidth = "700px";
+                nextQuestionButtonSection.style.height = "200px";
+                nextQuestionButtonSection.style.top = "50%";
+
+                nextQuestionButton.style.fontSize="1.2em";
+            }
+        });
+
+        nextQuestionButtonSection.appendChild(nextQuestionButton);
+        
+        return nextQuestionButtonSection;
     }
 
     updateScoreboard()
@@ -81,6 +118,18 @@ class Game
         }
     }
 
+    switchNextQuestionButtonVisibility(visible = true)
+    {
+        if(visible)
+        {
+           this.gameSection.appendChild(this.nextQuestionButton);
+        }
+        else
+        {
+            this.nextQuestionButton.remove();
+        }
+    }
+
     createGameSection()
     {
         let gameSection = document.createElement("section");
@@ -108,7 +157,7 @@ class Game
         }  
 
         /*css*/
-        gameSection.style.cssText = `${window.innerWidth < 600 ? "height: 200vh;" : "height: 100vh;"} overflow-y: auto; color: #f3f4f6; width: 100%; display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: center;`;
+        gameSection.style.cssText = `${window.innerWidth < 600 ? "height: 200vh;" : "height: 100vh;"} overflow-y: auto; color: #f3f4f6; width: 100%; display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: center; align-items: center; position: relative;`;
         questionSection.style.cssText = "box-sizing: content-box; font-size: 2.3rem; width: 90vw; height: 45vh; text-align: center; display: flex; justify-content: center; align-items: center;";
         answersSection.style.cssText = "box-sizing: content-box; overflow-y: auto; overflow-x: hidden; width: 90vw; height: 40vh; margin-top: 5vh; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;";
         infoBarSection.style.cssText = `${window.innerWidth < 600 ? "height: 100vh; flex-direction: column; justify-content: flex-start; align-items: center;" : "position: fixed; z-index: 999; top: 50px; max-height: 50vh; align-items: flex-start; justify-content: space-between;" } padding: 0 5vw; display: flex; width: 90vw;`;
@@ -184,7 +233,7 @@ class Game
     {
         if(answer == this.questions[this.currentType][this.currentQuestion[this.currentType]].correctAnswer)
         {  
-            console.log("correct answer"); //displayCorrectAnswer???
+            messageBox("Poprawna odpowiedź!", 1000);
             if(this.players[this.currentPlayer].type === this.questions[this.currentType][this.currentQuestion[this.currentType]].type)
             {
                 //if question is from player's category give 1 point
@@ -194,16 +243,16 @@ class Game
                 this.players[this.currentPlayer].points += 2;
             }
         } else {
-            console.log("wrong answer");
+            messageBox("Niepoprawna odpowiedź!", 2000);
         }
 
-         this.nextQuestion();
          this.updateScoreboard();
     }
-
-
+    
     displayQuestion()
     {
+        this.switchNextQuestionButtonVisibility(false);
+
         let answers = this.questions[this.currentType][this.currentQuestion[this.currentType]].answers;
         let answersSection = document.getElementById("answersSection") || alert("answers section was not created yet");
         let questionSection = document.getElementById("questionSection") || alert("question section was not created yet");
@@ -222,8 +271,49 @@ class Game
         
         for(let i in answers)
         {
-            let answerBtn = createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 300px; min-height: 54px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"};  max-height: 100px; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>this.answerResult(i));
-            
+            let answerBtn = createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 300px; min-height: 54px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"};  max-height: 100px; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>{
+                let correctHighlightColor = "#7ebf4e";
+                let wrongHighlightColor = "#ff383f";
+                let highlightBackground = "#383838";
+
+                let correctAnswerIdx = this.questions[this.currentType][this.currentQuestion[this.currentType]].correctAnswer;
+                let answers = this.questions[this.currentType][this.currentQuestion[this.currentType]].answers;
+
+                for(let j in answers)
+                {
+                    let answerToHighlight = document.getElementById("answer_" + j);
+                    answerToHighlight.disabled = true;
+                    
+                    if(j == i && j != correctAnswerIdx)
+                    {
+                        //worng
+                        answerToHighlight.style.background = wrongHighlightColor;
+                    }
+                    else if(j != i && j != correctAnswerIdx)
+                    {
+                        //not pressed, wrong
+                        answerToHighlight.style.border = "7px solid" + wrongHighlightColor;
+                        answerToHighlight.style.background = highlightBackground;
+                    }
+                    else if(j == i && j == correctAnswerIdx)
+                    {
+                        //pressed, correct
+                        answerToHighlight.style.background = correctHighlightColor;
+                    }
+                    else if(j != i && j == correctAnswerIdx)
+                    {
+                        //not pressed, correct
+                        answerToHighlight.style.border = "7px solid" + correctHighlightColor;
+                        answerToHighlight.style.background = highlightBackground;
+                    }
+                }
+
+                this.answerResult(i);
+                setTimeout(()=>this.switchNextQuestionButtonVisibility(), 1250);
+            });
+
+            answerBtn.id = "answer_" + i;
+
             window.addEventListener("resize", ()=>{
                 if(window.innerWidth < 600)
                 {

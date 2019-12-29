@@ -10,7 +10,7 @@
 //
 //    }
 
-function messageBox(message)
+function messageBox(message, duration = 8000)
 {
     /*credits: https://speckyboy.com/css-js-notification-alert-code/  && https://gist.github.com/gordonbrander/2230317 */
     let alertArea = document.getElementById("alertArea") || document.createElement("section");
@@ -43,7 +43,7 @@ function messageBox(message)
         setTimeout(function(){ 
             messageBox.remove()
         },500); 
-    }, 8000);
+    }, duration);
 }
 
 function uID()
