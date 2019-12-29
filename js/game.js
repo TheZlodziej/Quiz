@@ -5,7 +5,6 @@ class Game
     //  DROPDOWN MENU:
     //    -> REMAKE GAME BUTTON
     //    -> CLOSE GAME BUTTON
-    //  FIX CREATE QUESTION CONTENTS INPUT!!!
     //  QUESTION EDITOR
 
     constructor(players, questions)

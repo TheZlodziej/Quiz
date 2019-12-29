@@ -447,7 +447,7 @@ function createQuestionsSection()
     questionsSection.style.cssText="width:100vw; display: flex; flex-direction: column; justify-content: center; align-items: center;";
     rQdBtnSection.style.cssText=`${window.innerWidth < 600 ? "width: 100vw;" : "position: fixed; top: 0; left: 0; width: 15vw; max-width: 300px;"} min-width: 200px; height: 100vh; padding: 10px; display: flex; flex-direction: column;`;
     addQuestionSection.style.cssText="min-width: 300px; min-height: 500px; width: 20vw; height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center;";
-    addQuestionSection_.style.cssText=/*height cant be 100vh due to virtual keyboard problems in question creator*/"height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center;";
+    addQuestionSection_.style.cssText=/*height cant be 100vh due to virtual keyboard problems in question creator*/"min-height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center;";
 
     readyQuestionsSection.style.cssText="overflow-y: overlay; overflow-x: hidden; width: 100%; height: 80%; position: flex; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;";
     downloadButtonSection.style.cssText="width: 100%; height: 20%; display: flex; align-items: center; justify-content: center;";
