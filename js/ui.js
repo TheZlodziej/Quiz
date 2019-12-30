@@ -51,7 +51,7 @@ function uID()
     return '_' + Math.random().toString(36).substr(2, 9);
 }
 
-function createFileInput()
+function createFileInput(edition)
 {
     let fileInputSection = document.createElement("section");
     let fileInput = document.createElement("input");
@@ -71,7 +71,7 @@ function createFileInput()
     fileInputLabel.style.cssText = "background: #ff5a60; padding: 15px 35px; border-radius: 50px; text-transform: uppercase; font-weight: bold; cursor: pointer; color: #f3f4f6; font-size: 1.1rem;";
 
     /*event listeners*/
-    fileInput.addEventListener('change', ()=>loadFile());
+    fileInput.addEventListener('change', ()=>loadFile(edition));
     
     fileInputSection.appendChild(fileInput);
     fileInputSection.appendChild(fileInputLabel);
@@ -340,17 +340,16 @@ function createQuestionsSection()
                                 {
                                     let aID = uID();
                                     let btnID = uID();
-
-                                    let answerButton = createButton(trimText(answer.childNodes[0].textContent,10), "", ()=>{
+                                    //tu jak cofasz pytanie to ta poprawna sie nie koloruje
+                                    let answerButton = createButton(trimText(answer.childNodes[0].textContent, 6), `width: 20%; height; 10%; font-size: 1.1em; min-height: 27px; min-width: 90px; margin: 3px 3px; border-radius: 50px; color: #f3f4f6; ${answer.childNodes[1].textContent == "true" ? "background: #8bc064;" : "background: #689eb8;"}`, ()=>{
                                         let answer_ = document.getElementById(aID);
-
                                         if(answer_.childNodes[1].textContent == "true")
                                         {
                                             qCorrectAnswerCheckbox.disabled = true;
                                         }
 
                                         qAnswerContents.value = answer_.childNodes[0].textContent;
-                                        qCorrectAnswerCheckbox.checked = answer_.childNodes[1].textContent == "true";
+                                        qCorrectAnswerCheckbox.checked = (answer_.childNodes[1].textContent == "true");
                                         answer_.remove();
                                         document.getElementById(btnID).remove();
                                     });
@@ -359,13 +358,13 @@ function createQuestionsSection()
 
                                     answers.innerHTML+=`<div id="${aID}"><div>${answer.childNodes[0].textContent}</div><div>${answer.childNodes[1].textContent}</div></div>`;
                                     qAnswersSection.prepend(answerButton);
-
-                                    document.getElementById(qID).remove();
-                                    document.getElementById(qBtnID).remove();
                                 }
+
+                                document.getElementById(qBtnID).remove();
+                                document.getElementById(qID).remove();
                             });
 
-                            questions.innerHTML+=`<div id=${qID}><div>${qContents.value}</div><div>${qType.value}</div><div>${answers.innerHTML}</div></div>`
+                            questions.innerHTML+=`<div id="${qID}"><div>${qContents.value}</div><div>${qType.value}</div><div>${answers.innerHTML}</div></div>`;
 
                             questionBtn.id=qBtnID;
                             qContents.value="";
@@ -431,8 +430,20 @@ function createQuestionsSection()
         }
     });
 
+    let editQuestionButton = createButton("Edytuj pytania!", "position: fixed; right: 0; top: 0;", ()=>{
+        clearBody();
+        createFileInput(true);
+    });
+
     /*attributes*/
     qCorrectAnswerCheckbox.id="qCorrectAnswer";
+    readyQuestionsSection.id="readyQuestionsSection";
+    qContents.id="qContents";
+    qType.id="qType";
+    qAnswersSection.id="qAnswersSection";
+    qAnswerContents.id="qAnswerContents";
+    answers.id = "qAnswers";
+    questions.id="qQuestions";
 
     qCorrectAnswerLabel.for="qCorrectAnswer";
 
@@ -505,6 +516,7 @@ function createQuestionsSection()
     rQdBtnSection.appendChild(readyQuestionsSection);
     rQdBtnSection.appendChild(downloadButtonSection);
 
+    questionsSection.appendChild(editQuestionButton);
     questionsSection.appendChild(questions);
     questionsSection.appendChild(answers);
     questionsSection.appendChild(addQuestionSection_);

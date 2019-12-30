@@ -4,7 +4,6 @@ class Game
     //  DROPDOWN MENU:
     //    -> REMAKE GAME BUTTON
     //    -> CLOSE GAME BUTTON
-    //  QUESTION EDITOR
     //  BACK BUTTON
 
     constructor(players, questions)
