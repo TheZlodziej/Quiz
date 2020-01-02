@@ -1,5 +1,7 @@
 function gameMenu()
 {
+    clearBody();
+
     let gameMenu = document.createElement("section");
 
     let menuBtnStyles = "width: 300px; height: 54px; font-size: 1.1rem; margin: 10px 0; border-radius: 50px; font-weight: bold; color: #f3f4f6; text-transform: uppercase;";
@@ -28,15 +30,7 @@ function showQuestionsInput()
 function showPlayersInput(parsedJSON)
 {
     clearBody();
-    let playersInputSection = document.createElement("section");
-    let playersInput = createPlayersInput(parsedJSON);
-    let startButton = createButton("rozpocznij", "background: #689eb8; height: 50px; min-height: 50px; width: 300px; font-size: 1.1rem; color: #f3f4f6; border-radius: 50px; text-transform: uppercase; font-weight: bold;", ()=>loadPlayers(parsedJSON));
-    /*css*/
-    playersInputSection.style.cssText="height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center;";
-
-    playersInputSection.appendChild(playersInput);
-    playersInputSection.appendChild(startButton);
-    document.body.prepend(playersInputSection);
+    createPlayersInput(parsedJSON);
 }
 
 function loadFile(edition) 
@@ -171,7 +165,7 @@ function loadPlayers(parsedJSON)
   }
 }
 
-function initGame(questions, players = [new Player("undefined_player", "undefined_category")]){
+function initGame(questions = [new Question("undefined_question", ["undefined_answer"], 0, "undefined_type" )], players = [new Player("undefined_player", "undefined_category")]){
     clearBody();
     
     let game = new Game(players, questions);

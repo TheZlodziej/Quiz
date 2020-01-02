@@ -1,10 +1,7 @@
 class Game
 {
     //TODO:
-    //  DROPDOWN MENU:
-    //    -> REMAKE GAME BUTTON
-    //    -> CLOSE GAME BUTTON
-    //  BACK BUTTON
+    //  ZROBIĆ POPRAWNE WYśWIETLANIE POTĘG
 
     constructor(players, questions)
     {

@@ -1,6 +1,6 @@
 //      FUNCTION TEMPLATE 
 //
-//    function elementName()
+//    function elementName(arguments)
 //    {
 //        /*attributes*/
 //
@@ -56,6 +56,16 @@ function createFileInput(edition)
     let fileInputSection = document.createElement("section");
     let fileInput = document.createElement("input");
     let fileInputLabel = document.createElement("label");
+    let backArrow = createBackArrow(()=>{
+        if(edition)
+        {
+            createQuestions();
+        }
+        else
+        {
+            gameMenu();
+        }
+    })
 
     /*attributes*/
     fileInput.type = "file";
@@ -66,21 +76,43 @@ function createFileInput(edition)
     fileInputLabel.innerHTML = "Wybierz plik z pytaniami";
 
     /*css*/
-    fileInputSection.style.cssText = "height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center;"
+    fileInputSection.style.cssText = "height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center; position: relative;";
     fileInput.style.cssText = "display: none;"; 
     fileInputLabel.style.cssText = "background: #ff5a60; padding: 15px 35px; border-radius: 50px; text-transform: uppercase; font-weight: bold; cursor: pointer; color: #f3f4f6; font-size: 1.1rem;";
 
     /*event listeners*/
     fileInput.addEventListener('change', ()=>loadFile(edition));
-    
+
+    fileInputSection.appendChild(backArrow);
     fileInputSection.appendChild(fileInput);
     fileInputSection.appendChild(fileInputLabel);
 
     document.body.prepend(fileInputSection);
 }
 
+function createBackArrow(previousState)
+{
+    let backArrow = document.createElement("section");
+    let arrowIcon = document.createElement("i");
+
+    /*attributes*/
+
+    /*styles*/
+    arrowIcon.style.cssText = "border: solid #f3f4f6; border-width: 0 3px 3px 0; display: inline-block; padding: 10px; transform: rotate(135deg); -webkit-transform: rotate(135deg);";
+    backArrow.style.cssText = "cursor: pointer; position: absolute; left: 20px; top: 15px; z-index: 4; padding: 15px;";
+
+    /*event listeners*/
+    backArrow.addEventListener("click", previousState);
+
+    backArrow.appendChild(arrowIcon);
+
+    return backArrow;
+}
+
 function createPlayersInput(parsedJSON)
 {
+    let playersInputSectionContainer = document.createElement("section");
+    let startButton = createButton("rozpocznij", "background: #689eb8; height: 50px; min-height: 50px; width: 300px; font-size: 1.1rem; color: #f3f4f6; border-radius: 50px; text-transform: uppercase; font-weight: bold;", ()=>loadPlayers(parsedJSON));
     let playersInputSection = document.createElement("form");
     let playersList = document.createElement("section");
     let playerInputName = document.createElement("input");
@@ -92,7 +124,7 @@ function createPlayersInput(parsedJSON)
     let addButton = createButton("dodaj gracza", "background: #8bc064; margin: 10px 0; height: 50px; width: 300px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>{
         if(playerInputName.value){
             if(playerInputCategory.value){
-            playersList.innerHTML += `<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>${escape(playerInputName.value)}</div><div>(${playerInputCategory.value})</div></div>`; //display in some other way;
+            playersList.innerHTML += `<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>${escape(playerInputName.value)}</div><div>(${playerInputCategory.value})</div></div>`;
             players.innerHTML += `<div><div>${escape(playerInputName.value)}</div><div>${playerInputCategory.value}</div></div>`;
 
             playerInputName.value = "";
@@ -107,7 +139,9 @@ function createPlayersInput(parsedJSON)
         }
     });
 
-    //TODO: hide HTML select tag and style your own one with so it's cross platform styled (?)
+    let backArrow = createBackArrow(()=>{
+        showQuestionsInput();
+    });
 
     for(let el of parsedJSON)
     {
@@ -145,7 +179,8 @@ function createPlayersInput(parsedJSON)
     addButton.type="submit";
 
     /*css*/
-    playersInputSection.style.cssText="width: 20vw; min-width: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center;";
+    playersInputSectionContainer.style.cssText="height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: space-around; align-items: center;";
+    playersInputSection.style.cssText="width: 20vw; min-width: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;";
     playersList.style.cssText="width: 100%; height: 30vh; margin: 0 0 10px 0; max-height: 300px; min-height: 40px; font-size: 1.1rem; overflow-y: auto; overflow-x: hidden; color: #f3f4f6; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; align-content: center;";
     playerInputName.style.cssText="background: #fff; color: gray; margin: 10px 0; height: 50px; width: 300px; font-size: 1.1rem; border-radius: 50px; border: 0; text-align: center;";
     playerInputCategory.style.cssText=" -moz-appearance: none; -webkit-appearance: none; appearance: none; background: #fff; text-align-last:center; cursor: pointer; margin: 10px 0; height: 50px; width: 300px; font-size: 1.1rem; border-radius: 50px; border: 0; outline: none; color: gray;";
@@ -160,8 +195,12 @@ function createPlayersInput(parsedJSON)
     playersInputSection.appendChild(playerInputName);
     playersInputSection.appendChild(playerInputCategory);
     playersInputSection.appendChild(addButton);
-    
-    return playersInputSection;
+
+    playersInputSectionContainer.appendChild(playersInputSection);
+    playersInputSectionContainer.appendChild(startButton);
+    playersInputSectionContainer.appendChild(backArrow);
+
+    document.body.prepend(playersInputSectionContainer);
 }
 
 function createButton(text, styles = "", onClickEvent = ()=>{return})
@@ -253,6 +292,9 @@ function loadingAnimation(length = 1000)
 
 function createQuestionsSection()
 {
+    let backArrow = createBackArrow(()=>{
+        gameMenu();
+    });
     let questions = document.createElement("section");
     let answers = document.createElement("section");
     let questionsSection = document.createElement("section");
@@ -430,7 +472,7 @@ function createQuestionsSection()
         }
     });
 
-    let editQuestionButton = createButton("Edytuj pytania!", "position: fixed; right: 0; top: 0;", ()=>{
+    let editQuestionsButton = createButton("Edytuj pytania!", "font-weight: bold; text-transform: uppercase; font-size:.9em; background: #ff5a60; color: #f3f4f6; width: 170px; border-radius: 50px; height: 42px; position: absolute; right: 20px; top: 20px;", ()=>{
         clearBody();
         createFileInput(true);
     });
@@ -457,10 +499,10 @@ function createQuestionsSection()
     /*css*/
     questionsSection.style.cssText="width:100vw; display: flex; flex-direction: column; justify-content: center; align-items: center;";
     rQdBtnSection.style.cssText=`${window.innerWidth < 600 ? "width: 100vw;" : "position: fixed; top: 0; left: 0; width: 15vw; max-width: 300px;"} min-width: 200px; height: 100vh; padding: 10px; display: flex; flex-direction: column;`;
-    addQuestionSection.style.cssText="min-width: 300px; min-height: 500px; width: 20vw; height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center;";
-    addQuestionSection_.style.cssText=/*height cant be 100vh due to virtual keyboard problems in question creator*/"min-height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center;";
+    addQuestionSection.style.cssText=`${window.innerWidth < 600 ? "margin-top: 20px; height: calc(70vh+20px);" : "margin-top: 0px; height: 70vh;"} min-width: 300px; min-height: 600px; width: 20vw; display: flex; flex-direction: column; justify-content: center; align-items: center;`;
+    addQuestionSection_.style.cssText="min-height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center;";
 
-    readyQuestionsSection.style.cssText="overflow-y: overlay; overflow-x: hidden; width: 100%; height: 80%; position: flex; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;";
+    readyQuestionsSection.style.cssText="padding: 55px 0 0 0; overflow-y: overlay; overflow-x: hidden; width: 100%; height: 80%; position: flex; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;";
     downloadButtonSection.style.cssText="width: 100%; height: 20%; display: flex; align-items: center; justify-content: center;";
 
     qContents.style.cssText="background: #fff; margin: 10px 0; font-size: 1.1rem; border-radius: 50px; border: 0; height: 50px; width: 300px; text-align: center;";
@@ -484,6 +526,9 @@ function createQuestionsSection()
             rQdBtnSection.style.width = "100vw";
             rQdBtnSection.style.position = "";
             rQdBtnSection.style.maxWidth = "100vw";
+
+            addQuestionSection.style.height = "calc(70vh+20px)";
+            addQuestionSection.style.marginTop = "20px";
         }
         else
         {
@@ -495,6 +540,8 @@ function createQuestionsSection()
             rQdBtnSection.style.top = 0;
             rQdBtnSection.style.left = 0;
 
+            addQuestionSection.style.height = "70vh";
+            addQuestionSection.style.marginTop = "0px";
         }
     });
 
@@ -516,11 +563,12 @@ function createQuestionsSection()
     rQdBtnSection.appendChild(readyQuestionsSection);
     rQdBtnSection.appendChild(downloadButtonSection);
 
-    questionsSection.appendChild(editQuestionButton);
+    questionsSection.appendChild(editQuestionsButton);
     questionsSection.appendChild(questions);
     questionsSection.appendChild(answers);
     questionsSection.appendChild(addQuestionSection_);
     questionsSection.appendChild(rQdBtnSection);
+    questionsSection.appendChild(backArrow);
 
     document.body.prepend(questionsSection);
 }
