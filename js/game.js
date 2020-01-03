@@ -1,8 +1,5 @@
 class Game
 {
-    //TODO:
-    //  ZROBIĆ POPRAWNE WYśWIETLANIE POTĘG
-
     constructor(players, questions)
     {
        this.players = players;
@@ -254,20 +251,42 @@ class Game
         let questionSection = document.getElementById("questionSection") || alert("question section was not created yet");
         let colors = ["#689eb8", "#ff5a60", "#8bc064", "#ffdb5a", "#ff5a78", "#25c2ba", "#a27dd1", "#d17dc9", "#c43b5b", "#faa55a", "#c4b333", "#a7c433"];
         
-        function getRandomColor()
-        {
+        let getRandomColor = ()=>{
             let colorIndex = Math.floor(Math.random() * colors.length);
             let color = colors[colorIndex];
             colors.splice(colorIndex, 1);
             return color;
         }
 
+        let specialCharacters = (text)=>{
+            //check if there is power '^' and change add <sup> tag after it
+            let newTextArr = [];
+            for(let el of text.split('^'))
+            {
+                newTextArr.push(el.split(" "));
+            }
+            
+            let newText = "";
+            for(let i=0; i<newTextArr.length; i++)
+            {
+                for(let j=0; j<newTextArr[i].length; j++)
+                {
+                newText += j==0 && i!=0 ? `<sup style="position: relative; top: -10px;">${newTextArr[i][j]}</sup>` : `&nbsp;${newTextArr[i][j]}`;
+                }
+            }
+
+            //replace '/' with &frasl;
+            newText = newText.replace(/\//g, '&frasl;');
+
+            return newText;
+        }
+
         answersSection.innerHTML = ""; //remove old answers
-        questionSection.innerHTML = this.questions[this.currentType][this.currentQuestion[this.currentType]].contents;
+        questionSection.innerHTML = specialCharacters(this.questions[this.currentType][this.currentQuestion[this.currentType]].contents);
         
         for(let i in answers)
         {
-            let answerBtn = createButton(answers[i], `background: ${getRandomColor() || '#97cc76'}; min-width: 300px; min-height: 54px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"};  max-height: 100px; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>{
+            let answerBtn = createButton(specialCharacters(answers[i]), `background: ${getRandomColor() || '#97cc76'}; min-width: 300px; min-height: 54px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"};  max-height: 100px; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>{
                 let correctHighlightColor = "#7ebf4e";
                 let wrongHighlightColor = "#ff383f";
                 let highlightBackground = "#383838";

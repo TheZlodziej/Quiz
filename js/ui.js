@@ -10,7 +10,7 @@
 //
 //    }
 
-function messageBox(message, duration = 8000)
+function messageBox(message, duration = 5000)
 {
     /*credits: https://speckyboy.com/css-js-notification-alert-code/  && https://gist.github.com/gordonbrander/2230317 */
     let alertArea = document.getElementById("alertArea") || document.createElement("section");
@@ -36,7 +36,7 @@ function messageBox(message, duration = 8000)
 
     messageBox.appendChild(mMessage);
     messageBox.appendChild(closeButton);
-    alertArea.prepend(messageBox) || document.body.prepend(alertArea);
+    alertArea.prepend(messageBox) || document.body.appendChild(alertArea);
 
     setTimeout(function(){ 
         messageBox.style.opacity=0; 
@@ -140,6 +140,7 @@ function createPlayersInput(parsedJSON)
     });
 
     let backArrow = createBackArrow(()=>{
+        //clearBody();
         showQuestionsInput();
     });
 
@@ -207,7 +208,7 @@ function createButton(text, styles = "", onClickEvent = ()=>{return})
 {
     let button = document.createElement("button");
     /*attributes*/
-    button.innerText = text;
+    button.innerHTML = text;
 
     /*css*/
     button.style.cssText = "cursor: pointer; border: 0;" + styles;
@@ -581,7 +582,7 @@ function clearBody()
     {
         if(node.tagName != "SCRIPT")
         {
-            document.body.removeChild(node);
+            node.remove();
         }
     }
 }
