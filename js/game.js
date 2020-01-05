@@ -259,14 +259,17 @@ class Game
         }
 
         let specialCharacters = (text)=>{
+            //replace '/' with &frasl;
+            let newText = text.replace(/\//g, '&frasl;');
+
             //check if there is power '^' and change add <sup> tag after it
             let newTextArr = [];
-            for(let el of text.split('^'))
+            for(let el of newText.split('^'))
             {
                 newTextArr.push(el.split(" "));
             }
             
-            let newText = "";
+            newText = "";
             for(let i=0; i<newTextArr.length; i++)
             {
                 for(let j=0; j<newTextArr[i].length; j++)
@@ -274,9 +277,6 @@ class Game
                 newText += j==0 && i!=0 ? `<sup style="position: relative; top: -10px;">${newTextArr[i][j]}</sup>` : `&nbsp;${newTextArr[i][j]}`;
                 }
             }
-
-            //replace '/' with &frasl;
-            newText = newText.replace(/\//g, '&frasl;');
 
             return newText;
         }
@@ -286,7 +286,7 @@ class Game
         
         for(let i in answers)
         {
-            let answerBtn = createButton(specialCharacters(answers[i]), `background: ${getRandomColor() || '#97cc76'}; min-width: 300px; min-height: 54px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"};  max-height: 100px; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>{
+            let answerBtn = createButton(specialCharacters(answers[i]), `background: ${getRandomColor() || '#97cc76'}; min-width: 300px; overflow-x: auto; min-height: 54px; ${window.innerWidth < 600 ? "height: 7vh;" : "height: 30%;"};  max-height: 100px; font-size: 1.1rem; color: #f3f4f6; font-weight: bold; border-radius: 50px; margin: 5px 20px; font-size: 30px; ${window.innerWidth < 600 ? "width: calc(100% - 40px);" : "width: calc(50% - 40px);"} ;text-shadow: -1px -1px 0 rgba(61, 61, 62, .5),  1px -1px 0 rgba(61, 61, 62, .5), -1px 1px 0 rgba(61, 61, 62, .5), 1px 1px 0 rgba(61, 61, 62, .5);`, ()=>{
                 let correctHighlightColor = "#7ebf4e";
                 let wrongHighlightColor = "#ff383f";
                 let highlightBackground = "#383838";

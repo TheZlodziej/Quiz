@@ -124,8 +124,8 @@ function createPlayersInput(parsedJSON)
     let addButton = createButton("dodaj gracza", "background: #8bc064; margin: 10px 0; height: 50px; width: 300px; border-radius: 50px; text-transform: uppercase; font-weight: bold; color: #f3f4f6; font-size: 1.1rem;", ()=>{
         if(playerInputName.value){
             if(playerInputCategory.value){
-            playersList.innerHTML += `<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>${escape(playerInputName.value)}</div><div>(${playerInputCategory.value})</div></div>`;
-            players.innerHTML += `<div><div>${escape(playerInputName.value)}</div><div>${playerInputCategory.value}</div></div>`;
+            playersList.innerHTML += `<div style='margin: 5px 10px; display: flex;'><div style='margin: 0 5px 0 0;'>${playerInputName.value}</div><div>(${playerInputCategory.value})</div></div>`;
+            players.innerHTML += `<div><div>${playerInputName.value}</div><div>${playerInputCategory.value}</div></div>`;
 
             playerInputName.value = "";
             playerInputCategory.value = "";
