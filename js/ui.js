@@ -383,7 +383,7 @@ function createQuestionsSection()
                                 {
                                     let aID = uID();
                                     let btnID = uID();
-                                    //tu jak cofasz pytanie to ta poprawna sie nie koloruje
+                                    
                                     let answerButton = createButton(trimText(answer.childNodes[0].textContent, 6), `width: 20%; height; 10%; font-size: 1.1em; min-height: 27px; min-width: 90px; margin: 3px 3px; border-radius: 50px; color: #f3f4f6; ${answer.childNodes[1].textContent == "true" ? "background: #8bc064;" : "background: #689eb8;"}`, ()=>{
                                         let answer_ = document.getElementById(aID);
                                         if(answer_.childNodes[1].textContent == "true")
@@ -405,6 +405,9 @@ function createQuestionsSection()
 
                                 document.getElementById(qBtnID).remove();
                                 document.getElementById(qID).remove();
+
+                                qCorrectAnswerCheckbox.checked=false;
+                                qCorrectAnswerCheckbox.disabled=true;
                             });
 
                             questions.innerHTML+=`<div id="${qID}"><div>${qContents.value}</div><div>${qType.value}</div><div>${answers.innerHTML}</div></div>`;

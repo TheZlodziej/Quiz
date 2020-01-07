@@ -137,6 +137,9 @@ function editQuestions(parsedJSON)
 
       document.getElementById(qID).remove();
       document.getElementById(qBtnID).remove();
+
+      qCorrectAnswerCheckbox.checked=false;
+      qCorrectAnswerCheckbox.disabled=true;
     });
 
     questions.innerHTML+=`<div id="${qID}"><div>${q.contents}</div><div>${q.type}</div><div>${answersHTML}</div></div>`;
