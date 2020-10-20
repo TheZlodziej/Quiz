@@ -1,3 +1,3 @@
 # Quiz
 
-### //add description here
+### może by tak kiedyś zmienić ten opis i wyjechać w bieszczady...
