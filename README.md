@@ -1,4 +1,4 @@
 # Quiz
 
 ### full javascript app for making & displaying quizes.
-#### include the javascript file in the script tag of your html file and you're good to go!
+#### include the javascript files in the script tag (in the exact same order) of your html file and you're good to go!
