@@ -9,7 +9,7 @@
 
 ![](pictures/Quiz1.png)
 
-- When you're done with creating questions just simply download them by clicking the button red button in bottom left corner - the file with your questions should start downloading.
+- When you're done with creating questions just simply download them by clicking the red button in bottom left corner - the file with your questions should start downloading.
 - If you want to start the game, press the blue button on the main screen and select file with questions you just created.
 
 ![](pictures/Quiz2.png)
