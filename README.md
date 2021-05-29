@@ -22,7 +22,7 @@
 - Press the blue button after you add all the players and start the game.
 - The UI is very simple - current player is highlighted in the top left corner (on scoreboard) - he has to choose the correct answer. If a player wants to choose different question category, he has to use the drop-down menu in the top-right of the screen.
 - Here is how it looks
-- 
+
 ![](pictures/Quiz4.png)
 ![](pictures/Quiz5.png)
 ![](pictures/Quiz6.png)
