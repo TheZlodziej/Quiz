@@ -7,4 +7,4 @@
 ### Usage
 - Adding questions is fairly simple - just enter the content of the question, add its category and add answers. Remember to add a correct one (you will be notified if anything is wrong)
 
-[](pictures/Quiz1.png)
+![](pictures/Quiz1.png)
